@@ -31,11 +31,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sa
 #sheet.peek { transform: translateY(calc(100% - 140px)); }
 #sheet.half { transform: translateY(50%); }
 #sheet.full { transform: translateY(0); }
-#sheet-handle { display: flex; justify-content: center; padding: 10px 0 6px; cursor: grab; }
+#sheet-handle { display: flex; justify-content: center; padding: 14px 0 10px; cursor: grab; touch-action: none; }
 #sheet-handle .bar { width: 36px; height: 4px; border-radius: 2px; background: #d0d0d0; }
 #sheet-header { padding: 0 20px 12px; }
 #sheet-stats { font-size: 12px; color: #999; margin-bottom: 8px; }
-#sheet-content { overflow-y: auto; -webkit-overflow-scrolling: touch; flex: 1; min-height: 0; }
+#sheet-content { overflow-y: scroll; -webkit-overflow-scrolling: touch; flex: 1; min-height: 0; touch-action: pan-y; overscroll-behavior: contain; }
 
 /* List view */
 .estate-item { display: flex; align-items: center; padding: 14px 20px; border-bottom: 1px solid #f2f2f2; cursor: pointer; transition: background 0.15s; gap: 12px; }
@@ -399,14 +399,26 @@ estates.forEach(estate=>{
   markers.push(marker);
 });
 
-// Sheet drag
+// Sheet drag (handle only — content uses native scroll)
 const sheet=document.getElementById('sheet');const handle=document.getElementById('sheet-handle');
+const sheetContent=document.getElementById('sheet-content');
 let sheetState='peek',startY=0,startTranslate=0,isDragging=false;
+
 function getSheetTranslate(){const h=sheet.offsetHeight;if(sheetState==='peek')return h-140;if(sheetState==='half')return Math.round(h/2);return 0;}
+function setSheetState(s){sheetState=s;sheet.className=s;}
+
 handle.addEventListener('touchstart',e=>{isDragging=true;startY=e.touches[0].clientY;startTranslate=getSheetTranslate();sheet.style.transition='none';},{passive:true});
-document.addEventListener('touchmove',e=>{if(!isDragging)return;sheet.style.transform=`translateY(${Math.max(0,startTranslate+e.touches[0].clientY-startY)}px)`;},{passive:true});
-document.addEventListener('touchend',()=>{if(!isDragging)return;isDragging=false;sheet.style.transition='';const t=parseFloat(sheet.style.transform.replace(/[^0-9.-]/g,''))||0;const r=t/sheet.offsetHeight;sheetState=r<0.25?'full':r<0.6?'half':'peek';sheet.className=sheetState;});
-map.on('click',e=>{if(e.originalEvent&&e.originalEvent.target.closest&&e.originalEvent.target.closest('.leaflet-popup'))return;if(sheetState!=='peek'){sheetState='peek';sheet.className='peek';}document.getElementById('legend-panel').classList.remove('show');});
+handle.addEventListener('touchmove',e=>{if(!isDragging)return;e.preventDefault();sheet.style.transform=`translateY(${Math.max(0,startTranslate+e.touches[0].clientY-startY)}px)`;},{passive:false});
+handle.addEventListener('touchend',()=>{if(!isDragging)return;isDragging=false;sheet.style.transition='';const t=parseFloat(sheet.style.transform.replace(/[^0-9.-]/g,''))||0;const r=t/sheet.offsetHeight;setSheetState(r<0.25?'full':r<0.6?'half':'peek');});
+
+// Tap on content in peek/half → expand to half/full
+sheetContent.addEventListener('click',e=>{
+  if(e.target.closest('.estate-item,.detail-back'))return;
+  if(sheetState==='peek'){setSheetState('half');}
+  else if(sheetState==='half'){setSheetState('full');}
+});
+
+map.on('click',e=>{if(e.originalEvent&&e.originalEvent.target.closest&&e.originalEvent.target.closest('.leaflet-popup'))return;if(sheetState!=='peek'){setSheetState('peek');}document.getElementById('legend-panel').classList.remove('show');});
 
 // Layer toggles
 document.getElementById('btn-aoc').addEventListener('click',function(){if(map.hasLayer(aocLayer)){map.removeLayer(aocLayer);this.classList.remove('on');}else{map.addLayer(aocLayer);this.classList.add('on');}});
@@ -452,9 +464,8 @@ function showDetail(idx){
   currentView='detail';
 
   // Expand sheet to full for vineyard list
-  sheetState='full';
-  sheet.className='full';
-  document.getElementById('sheet-content').scrollTop=0;
+  setSheetState('full');
+  sheetContent.scrollTop=0;
 
   // Pan map
   const m=markers[idx];
