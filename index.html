@@ -15,57 +15,30 @@
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; overflow: hidden; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: #fafafa; color: #333; }
-
 #map { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1; }
-
-#topbar {
-  position: fixed; top: env(safe-area-inset-top, 0); left: 0; right: 0;
-  z-index: 1000; padding: 12px 16px 0; pointer-events: none;
-}
-#title-card {
-  background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  border-radius: 14px; padding: 12px 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); pointer-events: auto;
-}
+#topbar { position: fixed; top: env(safe-area-inset-top, 0); left: 0; right: 0; z-index: 1000; padding: 12px 16px 0; pointer-events: none; }
+#title-card { background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 14px; padding: 12px 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); pointer-events: auto; }
 #title-card h1 { font-size: 17px; font-weight: 700; color: #8b1a2b; letter-spacing: 1.5px; text-transform: uppercase; }
 #title-card p { font-size: 11px; color: #999; margin-top: 2px; letter-spacing: 0.5px; }
-
-#filter-bar {
-  position: fixed; top: calc(env(safe-area-inset-top, 0px) + 72px); left: 0; right: 0;
-  z-index: 1000; padding: 0 16px; pointer-events: none;
-}
-#filter-scroll {
-  display: flex; gap: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; pointer-events: auto; padding: 4px 0;
-}
+#filter-bar { position: fixed; top: calc(env(safe-area-inset-top, 0px) + 72px); left: 0; right: 0; z-index: 1000; padding: 0 16px; pointer-events: none; }
+#filter-scroll { display: flex; gap: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; pointer-events: auto; padding: 4px 0; }
 #filter-scroll::-webkit-scrollbar { display: none; }
-.filter-chip {
-  flex-shrink: 0; padding: 7px 14px; border: none; border-radius: 20px;
-  background: rgba(255,255,255,0.88); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 1px 6px rgba(0,0,0,0.08); color: #666; cursor: pointer;
-  font-size: 13px; font-weight: 500; transition: all 0.2s; white-space: nowrap;
-}
+.filter-chip { flex-shrink: 0; padding: 7px 14px; border: none; border-radius: 20px; background: rgba(255,255,255,0.88); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: 0 1px 6px rgba(0,0,0,0.08); color: #666; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s; white-space: nowrap; }
 .filter-chip.active { background: #8b1a2b; color: #fff; font-weight: 600; box-shadow: 0 2px 8px rgba(139,26,43,0.3); }
 
-#sheet {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; background: #fff;
-  border-radius: 18px 18px 0 0; box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
-  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
-  max-height: 75vh; display: flex; flex-direction: column; padding-bottom: env(safe-area-inset-bottom, 0);
-}
+/* Sheet */
+#sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; background: #fff; border-radius: 18px 18px 0 0; box-shadow: 0 -4px 20px rgba(0,0,0,0.1); transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1); max-height: 80vh; display: flex; flex-direction: column; padding-bottom: env(safe-area-inset-bottom, 0); }
 #sheet.peek { transform: translateY(calc(100% - 140px)); }
 #sheet.half { transform: translateY(calc(100% - 50vh)); }
 #sheet.full { transform: translateY(0); }
-
 #sheet-handle { display: flex; justify-content: center; padding: 10px 0 6px; cursor: grab; }
 #sheet-handle .bar { width: 36px; height: 4px; border-radius: 2px; background: #d0d0d0; }
 #sheet-header { padding: 0 20px 12px; }
 #sheet-stats { font-size: 12px; color: #999; margin-bottom: 8px; }
+#sheet-content { overflow-y: auto; -webkit-overflow-scrolling: touch; flex: 1; }
 
-#estate-list { overflow-y: auto; -webkit-overflow-scrolling: touch; flex: 1; }
-.estate-item {
-  display: flex; align-items: center; padding: 14px 20px; border-bottom: 1px solid #f2f2f2;
-  cursor: pointer; transition: background 0.15s; gap: 12px;
-}
+/* List view */
+.estate-item { display: flex; align-items: center; padding: 14px 20px; border-bottom: 1px solid #f2f2f2; cursor: pointer; transition: background 0.15s; gap: 12px; }
 .estate-item:active { background: #f7f3f0; }
 .estate-item.highlight { background: #fdf6f0; }
 .estate-grade-dot { flex-shrink: 0; width: 10px; height: 10px; border-radius: 50%; }
@@ -78,95 +51,69 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sa
 .grape-1 { background: #eff6ff; color: #2563eb; }
 .grape-s { background: #ecfdf5; color: #059669; }
 
-/* Layer & Legend buttons */
-.fab-group {
-  position: fixed; right: 16px; z-index: 999;
-  display: flex; flex-direction: column; gap: 10px;
-}
-.fab-group { bottom: 152px; }
-.fab-btn {
-  width: 42px; height: 42px; border-radius: 50%;
-  background: rgba(255,255,255,0.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-  border: none; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer;
-  font-size: 16px; display: flex; align-items: center; justify-content: center;
-  transition: transform 0.2s; color: #555;
-}
+/* Detail view */
+#detail-view { display: none; }
+#detail-view.show { display: block; }
+.detail-back { display: flex; align-items: center; gap: 6px; padding: 12px 20px; color: #8b1a2b; font-size: 14px; font-weight: 600; cursor: pointer; border-bottom: 1px solid #f2f2f2; }
+.detail-back:active { background: #f7f3f0; }
+.detail-header { padding: 16px 20px; border-bottom: 1px solid #f2f2f2; }
+.detail-header .d-name { font-size: 20px; font-weight: 700; color: #222; }
+.detail-header .d-aoc { font-size: 13px; color: #888; margin-top: 4px; }
+.detail-header .d-badge { margin-top: 8px; display: inline-block; }
+.detail-section { padding: 14px 20px; }
+.detail-section h3 { font-size: 13px; font-weight: 700; color: #8b1a2b; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px; }
+.vineyard-item { display: flex; align-items: flex-start; gap: 8px; padding: 8px 0; border-bottom: 1px solid #f8f8f8; }
+.vineyard-item:last-child { border-bottom: none; }
+.vy-type { flex-shrink: 0; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 700; letter-spacing: 0.3px; min-width: 28px; text-align: center; }
+.vy-gc { background: #8b1a2b; color: #fff; }
+.vy-1er { background: #f0e6d3; color: #8b6914; }
+.vy-v { background: #eee; color: #777; }
+.vy-name { font-size: 14px; color: #333; line-height: 1.4; }
+
+/* FABs */
+.fab-group { position: fixed; right: 16px; z-index: 999; display: flex; flex-direction: column; gap: 10px; bottom: 152px; }
+.fab-btn { width: 42px; height: 42px; border-radius: 50%; background: rgba(255,255,255,0.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: none; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; color: #555; }
 .fab-btn:active { transform: scale(0.9); }
 .fab-btn.on { background: #8b1a2b; color: #fff; }
 
-#legend-panel {
-  position: fixed; bottom: 260px; right: 16px; z-index: 999;
-  background: rgba(255,255,255,0.95); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  border-radius: 14px; padding: 14px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-  font-size: 12px; line-height: 22px; color: #555; display: none; max-height: 60vh; overflow-y: auto;
-}
+#legend-panel { position: fixed; bottom: 260px; right: 16px; z-index: 999; background: rgba(255,255,255,0.95); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: 14px; padding: 14px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); font-size: 12px; line-height: 22px; color: #555; display: none; max-height: 60vh; overflow-y: auto; }
 #legend-panel.show { display: block; }
-#legend-panel h4 { color: #8b1a2b; margin-bottom: 4px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; }
-#legend-panel .dot {
-  display: inline-block; width: 10px; height: 10px; border-radius: 50%;
-  margin-right: 6px; vertical-align: middle;
-}
-#legend-panel .swatch {
-  display: inline-block; width: 16px; height: 10px; border-radius: 2px;
-  margin-right: 6px; vertical-align: middle; opacity: 0.6;
-}
+#legend-panel h4 { color: #8b1a2b; margin-bottom: 4px; font-size: 12px; font-weight: 700; }
+#legend-panel .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+#legend-panel .swatch { display: inline-block; width: 16px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: middle; opacity: 0.6; }
 #legend-panel hr { border: none; border-top: 1px solid #eee; margin: 6px 0; }
 
 .leaflet-control-zoom { display: none; }
 .leaflet-control-attribution { font-size: 9px !important; background: rgba(255,255,255,0.7) !important; padding: 2px 6px !important; }
-
-/* GC label style */
-.gc-label {
-  font-size: 9px; font-weight: 700; color: #8b1a2b; letter-spacing: 0.5px;
-  white-space: nowrap; text-shadow: 0 0 3px #fff, 0 0 6px #fff, 0 0 9px #fff;
-  pointer-events: none;
-}
+.gc-label { font-size: 9px; font-weight: 700; color: #8b1a2b; letter-spacing: 0.5px; white-space: nowrap; text-shadow: 0 0 3px #fff, 0 0 6px #fff, 0 0 9px #fff; pointer-events: none; }
 
 @media (min-width: 769px) {
-  #topbar { left: 400px; }
-  #filter-bar { left: 400px; }
+  #topbar { left: 400px; } #filter-bar { left: 400px; }
   #sheet { left:0; width:400px; top:0; bottom:0; border-radius:0; max-height:100vh; transform:none!important; box-shadow:2px 0 12px rgba(0,0,0,0.06); }
-  #sheet-handle { display: none; }
-  #sheet-header { padding-top: 16px; }
+  #sheet-handle { display: none; } #sheet-header { padding-top: 16px; }
   #sheet-header h2 { display:block!important; font-size:22px; font-weight:300; color:#8b1a2b; letter-spacing:2px; text-transform:uppercase; margin-bottom:4px; }
   #sheet-header .desktop-sub { display:block!important; }
   #sheet .desktop-filters { display:flex!important; padding:0 20px 12px; gap:8px; flex-wrap:wrap; }
-  #filter-bar { display: none; }
-  #topbar { display: none; }
-  #map { left: 400px; }
-  .fab-group { bottom: 24px; }
-  #legend-panel { bottom: 140px; }
-  .leaflet-control-zoom { display: block; }
+  #filter-bar { display: none; } #topbar { display: none; } #map { left: 400px; }
+  .fab-group { bottom: 24px; } #legend-panel { bottom: 140px; } .leaflet-control-zoom { display: block; }
 }
 </style>
 </head>
 <body>
-
-<div id="topbar">
-  <div id="title-card">
-    <h1>Michelin Grape</h1>
-    <p>Burgundy Appellations + 2026 Grape Selection</p>
-  </div>
-</div>
-
-<div id="filter-bar">
-  <div id="filter-scroll">
-    <button class="filter-chip active" data-filter="all">All 94</button>
-    <button class="filter-chip" data-filter="3">3 Grapes</button>
-    <button class="filter-chip" data-filter="2">2 Grapes</button>
-    <button class="filter-chip" data-filter="1">1 Grape</button>
-    <button class="filter-chip" data-filter="s">Selected</button>
-  </div>
-</div>
-
+<div id="topbar"><div id="title-card"><h1>Michelin Grape</h1><p>Burgundy Appellations + 2026 Grape Selection</p></div></div>
+<div id="filter-bar"><div id="filter-scroll">
+  <button class="filter-chip active" data-filter="all">All 94</button>
+  <button class="filter-chip" data-filter="3">3 Grapes</button>
+  <button class="filter-chip" data-filter="2">2 Grapes</button>
+  <button class="filter-chip" data-filter="1">1 Grape</button>
+  <button class="filter-chip" data-filter="s">Selected</button>
+</div></div>
 <div id="map"></div>
-
 <div class="fab-group">
-  <button class="fab-btn on" id="btn-aoc" title="Appellations">A</button>
-  <button class="fab-btn on" id="btn-gc" title="Grand Cru">G</button>
-  <button class="fab-btn" id="btn-legend" title="Legend">i</button>
+  <button class="fab-btn on" id="btn-aoc">A</button>
+  <button class="fab-btn on" id="btn-gc">G</button>
+  <button class="fab-btn" id="btn-legend">i</button>
 </div>
-
 <div id="legend-panel">
   <h4>MICHELIN GRAPE</h4>
   <div><span class="dot" style="background:#b8860b"></span>3 Grapes (9)</div>
@@ -174,18 +121,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sa
   <div><span class="dot" style="background:#2563eb"></span>1 Grape (33)</div>
   <div><span class="dot" style="background:#059669"></span>Selected (32)</div>
   <hr>
-  <h4>APPELLATION (Village AOC)</h4>
+  <h4>APPELLATION</h4>
   <div><span class="swatch" style="background:#c0392b"></span>Cote de Nuits</div>
   <div><span class="swatch" style="background:#d4880f"></span>Cote de Beaune</div>
   <div><span class="swatch" style="background:#27ae60"></span>Cote Chalonnaise</div>
   <hr>
   <h4>GRAND CRU</h4>
-  <div><span class="dot" style="background:#8b1a2b;width:8px;height:8px;border:1px solid #8b1a2b"></span>Grand Cru vineyard</div>
-  <hr>
-  <h4>LAYER TOGGLE</h4>
-  <div style="color:#888;font-size:11px">A = Appellations on/off<br>G = Grand Cru on/off</div>
+  <div><span class="dot" style="background:#8b1a2b"></span>Grand Cru vineyard</div>
 </div>
-
 <div id="sheet" class="peek">
   <div id="sheet-handle"><div class="bar"></div></div>
   <div id="sheet-header">
@@ -200,405 +143,378 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sa
     <button class="filter-chip" data-filter="1">1 Grape (33)</button>
     <button class="filter-chip" data-filter="s">Selected (32)</button>
   </div>
-  <div id="estate-list"></div>
+  <div id="sheet-content">
+    <div id="list-view"></div>
+    <div id="detail-view"></div>
+  </div>
 </div>
-
 <script>
-// =====================================================
-// APPELLATION DATA (Village AOC strips along the cote)
-// =====================================================
-const appellations = [
-  // Cote de Nuits (north to south) — vineyard strips
-  { name: "Marsannay", region: "nuits", coords: [[47.280,4.960],[47.280,4.990],[47.262,4.988],[47.262,4.958]] },
-  { name: "Fixin", region: "nuits", coords: [[47.262,4.958],[47.262,4.985],[47.247,4.982],[47.247,4.955]] },
-  { name: "Gevrey-Chambertin", region: "nuits", coords: [[47.247,4.955],[47.247,4.982],[47.215,4.978],[47.215,4.950]] },
-  { name: "Morey-Saint-Denis", region: "nuits", coords: [[47.215,4.950],[47.215,4.978],[47.200,4.975],[47.200,4.948]] },
-  { name: "Chambolle-Musigny", region: "nuits", coords: [[47.200,4.948],[47.200,4.975],[47.185,4.972],[47.185,4.945]] },
-  { name: "Vougeot", region: "nuits", coords: [[47.185,4.945],[47.185,4.972],[47.174,4.970],[47.174,4.943]] },
-  { name: "Vosne-Romanee", region: "nuits", coords: [[47.174,4.943],[47.174,4.970],[47.155,4.968],[47.155,4.940]] },
-  { name: "Nuits-Saint-Georges", region: "nuits", coords: [[47.155,4.940],[47.155,4.968],[47.125,4.963],[47.125,4.935]] },
-  // Cote de Beaune
-  { name: "Pernand-Vergelesses", region: "beaune", coords: [[47.090,4.840],[47.090,4.870],[47.075,4.868],[47.075,4.838]] },
-  { name: "Savigny-les-Beaune", region: "beaune", coords: [[47.075,4.815],[47.075,4.850],[47.058,4.848],[47.058,4.813]] },
-  { name: "Beaune", region: "beaune", coords: [[47.040,4.820],[47.040,4.855],[47.018,4.845],[47.018,4.810]] },
-  { name: "Pommard", region: "beaune", coords: [[47.018,4.790],[47.018,4.820],[47.002,4.815],[47.002,4.785]] },
-  { name: "Volnay", region: "beaune", coords: [[47.008,4.778],[47.008,4.808],[46.995,4.803],[46.995,4.773]] },
-  { name: "Meursault", region: "beaune", coords: [[46.995,4.755],[46.995,4.790],[46.968,4.785],[46.968,4.750]] },
-  { name: "Auxey-Duresses", region: "beaune", coords: [[46.993,4.730],[46.993,4.758],[46.980,4.755],[46.980,4.728]] },
-  { name: "Saint-Romain", region: "beaune", coords: [[46.988,4.700],[46.988,4.730],[46.972,4.728],[46.972,4.698]] },
-  { name: "Puligny-Montrachet", region: "beaune", coords: [[46.960,4.742],[46.960,4.770],[46.943,4.768],[46.943,4.740]] },
-  { name: "Chassagne-Montrachet", region: "beaune", coords: [[46.943,4.728],[46.943,4.758],[46.925,4.755],[46.925,4.725]] },
-  { name: "Saint-Aubin", region: "beaune", coords: [[46.958,4.705],[46.958,4.735],[46.942,4.733],[46.942,4.703]] },
-  { name: "Santenay", region: "beaune", coords: [[46.925,4.700],[46.925,4.735],[46.905,4.730],[46.905,4.695]] },
-  { name: "Maranges", region: "beaune", coords: [[46.905,4.675],[46.905,4.708],[46.885,4.705],[46.885,4.672]] },
-  // Cote Chalonnaise
-  { name: "Rully", region: "chalon", coords: [[46.882,4.720],[46.882,4.755],[46.862,4.752],[46.862,4.718]] },
-  { name: "Mercurey", region: "chalon", coords: [[46.852,4.700],[46.852,4.735],[46.828,4.732],[46.828,4.698]] },
-  { name: "Montagny", region: "chalon", coords: [[46.795,4.700],[46.795,4.735],[46.770,4.732],[46.770,4.698]] },
-];
+const appellations=[{name:"Marsannay",region:"nuits",coords:[[47.280,4.960],[47.280,4.990],[47.262,4.988],[47.262,4.958]]},{name:"Fixin",region:"nuits",coords:[[47.262,4.958],[47.262,4.985],[47.247,4.982],[47.247,4.955]]},{name:"Gevrey-Chambertin",region:"nuits",coords:[[47.247,4.955],[47.247,4.982],[47.215,4.978],[47.215,4.950]]},{name:"Morey-Saint-Denis",region:"nuits",coords:[[47.215,4.950],[47.215,4.978],[47.200,4.975],[47.200,4.948]]},{name:"Chambolle-Musigny",region:"nuits",coords:[[47.200,4.948],[47.200,4.975],[47.185,4.972],[47.185,4.945]]},{name:"Vougeot",region:"nuits",coords:[[47.185,4.945],[47.185,4.972],[47.174,4.970],[47.174,4.943]]},{name:"Vosne-Romanee",region:"nuits",coords:[[47.174,4.943],[47.174,4.970],[47.155,4.968],[47.155,4.940]]},{name:"Nuits-Saint-Georges",region:"nuits",coords:[[47.155,4.940],[47.155,4.968],[47.125,4.963],[47.125,4.935]]},{name:"Pernand-Vergelesses",region:"beaune",coords:[[47.090,4.840],[47.090,4.870],[47.075,4.868],[47.075,4.838]]},{name:"Savigny-les-Beaune",region:"beaune",coords:[[47.075,4.815],[47.075,4.850],[47.058,4.848],[47.058,4.813]]},{name:"Beaune",region:"beaune",coords:[[47.040,4.820],[47.040,4.855],[47.018,4.845],[47.018,4.810]]},{name:"Pommard",region:"beaune",coords:[[47.018,4.790],[47.018,4.820],[47.002,4.815],[47.002,4.785]]},{name:"Volnay",region:"beaune",coords:[[47.008,4.778],[47.008,4.808],[46.995,4.803],[46.995,4.773]]},{name:"Meursault",region:"beaune",coords:[[46.995,4.755],[46.995,4.790],[46.968,4.785],[46.968,4.750]]},{name:"Auxey-Duresses",region:"beaune",coords:[[46.993,4.730],[46.993,4.758],[46.980,4.755],[46.980,4.728]]},{name:"Saint-Romain",region:"beaune",coords:[[46.988,4.700],[46.988,4.730],[46.972,4.728],[46.972,4.698]]},{name:"Puligny-Montrachet",region:"beaune",coords:[[46.960,4.742],[46.960,4.770],[46.943,4.768],[46.943,4.740]]},{name:"Chassagne-Montrachet",region:"beaune",coords:[[46.943,4.728],[46.943,4.758],[46.925,4.755],[46.925,4.725]]},{name:"Saint-Aubin",region:"beaune",coords:[[46.958,4.705],[46.958,4.735],[46.942,4.733],[46.942,4.703]]},{name:"Santenay",region:"beaune",coords:[[46.925,4.700],[46.925,4.735],[46.905,4.730],[46.905,4.695]]},{name:"Maranges",region:"beaune",coords:[[46.905,4.675],[46.905,4.708],[46.885,4.705],[46.885,4.672]]},{name:"Rully",region:"chalon",coords:[[46.882,4.720],[46.882,4.755],[46.862,4.752],[46.862,4.718]]},{name:"Mercurey",region:"chalon",coords:[[46.852,4.700],[46.852,4.735],[46.828,4.732],[46.828,4.698]]},{name:"Montagny",region:"chalon",coords:[[46.795,4.700],[46.795,4.735],[46.770,4.732],[46.770,4.698]]}];
+const regionColors={nuits:"#c0392b",beaune:"#d4880f",chalon:"#27ae60"};
+const grandCrus=[{name:"Chambertin",lat:47.2220,lng:4.9720,aoc:"Gevrey-Chambertin"},{name:"Chambertin-Clos de Beze",lat:47.2250,lng:4.9715,aoc:"Gevrey-Chambertin"},{name:"Chapelle-Chambertin",lat:47.2235,lng:4.9730,aoc:"Gevrey-Chambertin"},{name:"Charmes-Chambertin",lat:47.2200,lng:4.9735,aoc:"Gevrey-Chambertin"},{name:"Griotte-Chambertin",lat:47.2215,lng:4.9725,aoc:"Gevrey-Chambertin"},{name:"Latricieres-Chambertin",lat:47.2190,lng:4.9730,aoc:"Gevrey-Chambertin"},{name:"Mazis-Chambertin",lat:47.2260,lng:4.9710,aoc:"Gevrey-Chambertin"},{name:"Ruchottes-Chambertin",lat:47.2265,lng:4.9705,aoc:"Gevrey-Chambertin"},{name:"Clos de la Roche",lat:47.2085,lng:4.9640,aoc:"Morey-Saint-Denis"},{name:"Clos Saint-Denis",lat:47.2065,lng:4.9635,aoc:"Morey-Saint-Denis"},{name:"Clos de Tart",lat:47.2055,lng:4.9630,aoc:"Morey-Saint-Denis"},{name:"Clos des Lambrays",lat:47.2075,lng:4.9638,aoc:"Morey-Saint-Denis"},{name:"Bonnes-Mares",lat:47.1975,lng:4.9580,aoc:"Chambolle-Musigny"},{name:"Musigny",lat:47.1905,lng:4.9570,aoc:"Chambolle-Musigny"},{name:"Clos de Vougeot",lat:47.1770,lng:4.9565,aoc:"Vougeot"},{name:"Grands Echezeaux",lat:47.1740,lng:4.9555,aoc:"Vosne-Romanee"},{name:"Echezeaux",lat:47.1720,lng:4.9545,aoc:"Vosne-Romanee"},{name:"Richebourg",lat:47.1680,lng:4.9560,aoc:"Vosne-Romanee"},{name:"Romanee-Saint-Vivant",lat:47.1665,lng:4.9550,aoc:"Vosne-Romanee"},{name:"Romanee-Conti",lat:47.1645,lng:4.9535,aoc:"Vosne-Romanee"},{name:"La Romanee",lat:47.1655,lng:4.9540,aoc:"Vosne-Romanee"},{name:"La Tache",lat:47.1620,lng:4.9525,aoc:"Vosne-Romanee"},{name:"La Grande Rue",lat:47.1640,lng:4.9530,aoc:"Vosne-Romanee"},{name:"Corton",lat:47.0770,lng:4.8620,aoc:"Pernand-Vergelesses"},{name:"Corton-Charlemagne",lat:47.0755,lng:4.8560,aoc:"Pernand-Vergelesses"},{name:"Chevalier-Montrachet",lat:46.9530,lng:4.7560,aoc:"Puligny-Montrachet"},{name:"Montrachet",lat:46.9510,lng:4.7550,aoc:"Puligny-Montrachet"},{name:"Batard-Montrachet",lat:46.9495,lng:4.7545,aoc:"Puligny-Montrachet"},{name:"Bienvenues-Batard-Montrachet",lat:46.9505,lng:4.7555,aoc:"Puligny-Montrachet"},{name:"Criots-Batard-Montrachet",lat:46.9480,lng:4.7535,aoc:"Chassagne-Montrachet"}];
 
-const regionColors = { nuits: "#c0392b", beaune: "#d4880f", chalon: "#27ae60" };
+// Vineyard data per estate
+const vineyardData = {
+"Cecile Tremblay":["GC:Chapelle-Chambertin","GC:Echezeaux","GC:Griotte-Chambertin","GC:Clos de Vougeot","1er:Chambolle-Musigny Les Feusselottes","1er:Vosne-Romanee Les Beaumonts","1er:Nuits-Saint-Georges Les Murgers"],
+"Dugat-Py":["GC:Chambertin","GC:Charmes-Chambertin","GC:Mazoyeres-Chambertin","GC:Mazis-Chambertin","GC:Corton-Charlemagne","1er:Gevrey-Chambertin Lavaux Saint-Jacques","1er:Gevrey-Chambertin Champeaux","1er:Gevrey-Chambertin Fonteny"],
+"Roumier":["GC:Musigny","GC:Bonnes-Mares","GC:Ruchottes-Chambertin","GC:Corton-Charlemagne","GC:Clos de Vougeot","1er:Chambolle-Musigny Les Amoureuses","1er:Chambolle-Musigny Les Cras","1er:Morey-Saint-Denis Clos de la Bussiere"],
+"Domaine de la Romanee-Conti":["GC:Romanee-Conti (monopole)","GC:La Tache (monopole)","GC:Richebourg","GC:Romanee-Saint-Vivant","GC:Grands Echezeaux","GC:Echezeaux","GC:Corton","GC:Le Montrachet"],
+"Domaine Leroy":["GC:Chambertin","GC:Latricieres-Chambertin","GC:Musigny","GC:Clos de la Roche","GC:Romanee-Saint-Vivant","GC:Richebourg","GC:Clos de Vougeot","GC:Corton-Renardes","1er:Nuits-Saint-Georges Aux Boudots","1er:Vosne-Romanee Les Beaux Monts"],
+"Domaine d'Auvenay":["GC:Chevalier-Montrachet","GC:Criots-Batard-Montrachet","GC:Batard-Montrachet","GC:Bonnes-Mares","GC:Mazis-Chambertin","1er:Puligny-Montrachet Les Folatieres","1er:Meursault Les Gouttes d'Or"],
+"Coche-Dury":["GC:Corton-Charlemagne","1er:Meursault Perrieres","1er:Meursault Caillerets","1er:Meursault Genevrieres","1er:Volnay Clos des Chenes"],
+"Jean-Marc & Thomas Bouley":["1er:Volnay Clos des Chenes","1er:Volnay Les Caillerets","1er:Volnay Les Carelles","1er:Pommard Les Rugiens","1er:Pommard Les Fremiers","1er:Pommard Les Pezerolles"],
+"Hubert Lamy":["GC:Criots-Batard-Montrachet","1er:Saint-Aubin En Remilly","1er:Saint-Aubin Clos de la Chateniere","1er:Saint-Aubin Les Frionnes","1er:Saint-Aubin Murgers des Dents de Chien"],
+"Dujac":["GC:Clos de la Roche","GC:Clos Saint-Denis","GC:Bonnes-Mares","GC:Charmes-Chambertin","GC:Chambertin","GC:Echezeaux","GC:Romanee-Saint-Vivant","1er:Vosne-Romanee Aux Malconsorts","1er:Gevrey-Chambertin Aux Combottes"],
+"Denis Mortet":["GC:Chambertin","GC:Mazis-Chambertin","GC:Bonnes-Mares","1er:Gevrey-Chambertin Lavaux Saint-Jacques","1er:Gevrey-Chambertin Les Champeaux"],
+"Georges Mugneret-Gibourg":["GC:Ruchottes-Chambertin","GC:Clos de Vougeot","GC:Echezeaux","1er:Nuits-Saint-Georges Les Chaignots","1er:Chambolle-Musigny Les Feusselottes"],
+"Bruno Clair":["GC:Chambertin-Clos de Beze","GC:Bonnes-Mares","GC:Corton-Charlemagne","1er:Gevrey-Chambertin Clos Saint-Jacques","1er:Gevrey-Chambertin Les Cazetiers","1er:Savigny-les-Beaune La Dominode"],
+"Gerard Mugneret":["GC:Echezeaux","1er:Vosne-Romanee Les Brulees","1er:Vosne-Romanee Les Suchots"],
+"Jacques-Frederic Mugnier":["GC:Musigny","GC:Bonnes-Mares","1er:Chambolle-Musigny Les Amoureuses","1er:Nuits-Saint-Georges Clos de la Marechale (monopole)"],
+"Jean-Claude Bachelet":["GC:Bienvenues-Batard-Montrachet","1er:Saint-Aubin Le Charmois","1er:Saint-Aubin En Remilly","1er:Chassagne-Montrachet Les Macherelles"],
+"Paul Pillot":["1er:Chassagne-Montrachet Clos Saint-Jean","1er:Chassagne-Montrachet Les Grandes Ruchottes","1er:Chassagne-Montrachet Les Caillerets","1er:Chassagne-Montrachet La Romanee"],
+"Arnaud Ente":["1er:Meursault Les Gouttes d'Or","1er:Puligny-Montrachet Les Referts","1er:Volnay Santenots du Milieu"],
+"Benoit Ente":["1er:Puligny-Montrachet Clos de la Truffiere","1er:Puligny-Montrachet Les Folatieres"],
+"Benoit Moreau":["GC:Batard-Montrachet","1er:Chassagne-Montrachet Les Grandes Ruchottes","1er:Chassagne-Montrachet La Maltroie"],
+"Lamy-Caillat":["1er:Chassagne-Montrachet Les Caillerets","1er:Chassagne-Montrachet Les Champs Gains","1er:Saint-Aubin En l'Ebaupin"],
+"Bonneau du Martray":["GC:Corton-Charlemagne","GC:Corton"],
+"Domaine des Comtes Lafon":["GC:Le Montrachet","1er:Meursault Perrieres","1er:Meursault Genevrieres","1er:Meursault Charmes","1er:Volnay Santenots-du-Milieu","1er:Volnay Champans"],
+"Domaine des Croix":["GC:Corton Les Greves","GC:Corton-Charlemagne","1er:Beaune Les Bressandes","1er:Beaune Les Greves"],
+"Domaine Leflaive":["GC:Chevalier-Montrachet","GC:Batard-Montrachet","GC:Bienvenues-Batard-Montrachet","GC:Le Montrachet","1er:Puligny-Montrachet Les Pucelles","1er:Puligny-Montrachet Les Folatieres","1er:Puligny-Montrachet Le Clavoillon"],
+"Etienne Sauzet":["GC:Batard-Montrachet","GC:Bienvenues-Batard-Montrachet","1er:Puligny-Montrachet Les Combettes","1er:Puligny-Montrachet Champ Canet","1er:Puligny-Montrachet Les Referts"],
+"Jean-Marc Vincent":["1er:Santenay Les Gravieres","1er:Santenay Le Beaurepaire"],
+"Bruno Lorenzon":["1er:Mercurey Les Champs Martin","1er:Mercurey Le Chapitre","1er:Mercurey Piece 13"],
+"Dureuil-Janthial":["1er:Rully Le Meix Cadot","1er:Rully Margotes","1er:Rully Gresigny","1er:Puligny-Montrachet Les Champs Gains"],
+"Armand Rousseau":["GC:Chambertin","GC:Chambertin-Clos de Beze","GC:Ruchottes-Chambertin Clos des Ruchottes (monopole)","GC:Charmes-Chambertin","GC:Clos de la Roche","1er:Gevrey-Chambertin Clos Saint-Jacques","1er:Gevrey-Chambertin Les Cazetiers"],
+"Claude Dugat":["GC:Chambertin","GC:Charmes-Chambertin","GC:Griotte-Chambertin","GC:Chapelle-Chambertin","1er:Gevrey-Chambertin Lavaux Saint-Jacques"],
+"Denis Bachelet":["GC:Charmes-Chambertin","1er:Gevrey-Chambertin Les Corbeaux"],
+"Duroche":["GC:Chambertin-Clos de Beze","GC:Latricieres-Chambertin","GC:Griotte-Chambertin","GC:Charmes-Chambertin","1er:Gevrey-Chambertin Lavaut Saint-Jacques"],
+"Joseph Roty":["GC:Charmes-Chambertin","GC:Mazis-Chambertin","GC:Griotte-Chambertin","1er:Gevrey-Chambertin Les Fontenys"],
+"Trapet":["GC:Chambertin","GC:Latricieres-Chambertin","GC:Chapelle-Chambertin","1er:Gevrey-Chambertin Clos Prieur"],
+"Comte Georges de Vogue":["GC:Musigny (7.2 ha)","GC:Bonnes-Mares","1er:Chambolle-Musigny Les Amoureuses","1er:Chambolle-Musigny Les Baudes"],
+"Ghislaine Barthod":["1er:Chambolle-Musigny Les Cras","1er:Chambolle-Musigny Aux Beaux Bruns","1er:Chambolle-Musigny Les Fuees","1er:Chambolle-Musigny Les Charmes","1er:Chambolle-Musigny Les Chatelots"],
+"Hudelot-Noellat":["GC:Romanee-Saint-Vivant","GC:Richebourg","GC:Clos de Vougeot","1er:Vosne-Romanee Les Suchots","1er:Vosne-Romanee Les Malconsorts"],
+"Louis Boillot":["1er:Gevrey-Chambertin Cherbaudes","1er:Volnay Les Angles","1er:Volnay Les Caillerets","1er:Nuits-Saint-Georges Les Pruliers"],
+"Clos de Tart":["GC:Clos de Tart (7.53 ha monopole)"],
+"Domaine des Lambrays":["GC:Clos des Lambrays (8.66 ha)","1er:Puligny-Montrachet Les Folatieres","1er:Puligny-Montrachet Clos du Cailleret"],
+"Domaine Ponsot":["GC:Clos de la Roche","GC:Clos Saint-Denis","GC:Chambertin","GC:Chapelle-Chambertin","GC:Griotte-Chambertin","1er:Morey-Saint-Denis Clos des Monts Luisants (monopole)"],
+"Arnoux-Lachaux":["GC:Romanee-Saint-Vivant","GC:Echezeaux","GC:Clos de Vougeot","GC:Latricieres-Chambertin","1er:Vosne-Romanee Les Suchots","1er:Vosne-Romanee Aux Reignots"],
+"Domaine Sylvain Cathiard":["GC:Romanee-Saint-Vivant","1er:Vosne-Romanee Aux Malconsorts","1er:Vosne-Romanee Aux Reignots","1er:Vosne-Romanee Les Suchots"],
+"Meo-Camuzet":["GC:Richebourg","GC:Clos de Vougeot","GC:Echezeaux","GC:Corton","1er:Vosne-Romanee Cros Parantoux","1er:Vosne-Romanee Aux Brulees","1er:Nuits-Saint-Georges Les Murgers"],
+"Chateau de la Tour":["GC:Clos de Vougeot (5.48 ha)"],
+"Faiveley":["GC:Chambertin-Clos de Beze","GC:Mazis-Chambertin","GC:Latricieres-Chambertin","GC:Musigny","GC:Clos de Vougeot","GC:Echezeaux","GC:Corton Clos des Cortons (monopole)","GC:Corton-Charlemagne","GC:Batard-Montrachet","1er:Nuits-Saint-Georges Les Saint-Georges","1er:Gevrey-Chambertin Les Cazetiers"],
+"Bernard-Bonin":["1er:Meursault Genevrieres","1er:Meursault Les Charmes","1er:Puligny-Montrachet La Garenne","1er:Puligny-Montrachet Les Folatieres"],
+"Henri Boillot":["GC:Batard-Montrachet","GC:Corton-Charlemagne","1er:Puligny-Montrachet Les Pucelles","1er:Puligny-Montrachet Clos de la Mouchere (monopole)","1er:Volnay Les Caillerets"],
+"Henri Germain":["1er:Meursault Les Charmes","1er:Meursault Les Perrieres","1er:Chassagne-Montrachet Morgeot"],
+"Jean-Marc Roulot":["1er:Meursault Les Perrieres","1er:Meursault Clos des Boucheres","1er:Meursault Les Charmes"],
+"Vincent Girardin":["GC:Batard-Montrachet","GC:Chevalier-Montrachet","GC:Corton-Charlemagne","GC:Le Montrachet","1er:Meursault Perrieres","1er:Meursault Charmes"],
+"Domaine de Montille":["GC:Corton Clos du Roi","GC:Corton-Charlemagne","GC:Chevalier-Montrachet","1er:Volnay Les Taillepieds","1er:Pommard Les Rugiens","1er:Puligny-Montrachet Les Folatieres"],
+"Marquis d'Angerville":["1er:Volnay Clos des Ducs (monopole)","1er:Volnay Les Caillerets","1er:Volnay Champans","1er:Volnay Les Taillepieds","1er:Volnay Les Fremiets"],
+"Michel Lafarge":["1er:Volnay Clos du Chateau des Ducs (monopole)","1er:Volnay Clos des Chenes","1er:Volnay Les Caillerets","1er:Beaune Greves"],
+"Roblet-Monnot":["1er:Volnay Taillepieds","1er:Volnay Les Brouillards","1er:Volnay Les Pitures"],
+"Benjamin Leroux":["GC:Clos de Vougeot","GC:Clos Saint-Denis","GC:Batard-Montrachet","1er:Beaune Les Cent-Vignes","1er:Volnay Les Mitans"],
+"Joseph Drouhin":["GC:Chambertin-Clos de Beze","GC:Griotte-Chambertin","GC:Musigny","GC:Bonnes-Mares","GC:Clos de Vougeot","GC:Echezeaux","GC:Grands-Echezeaux","GC:Corton-Charlemagne","GC:Montrachet (Marquis de Laguiche)","1er:Beaune Clos des Mouches"],
+"Louis Jadot":["GC:Chambertin","GC:Chambertin-Clos de Beze","GC:Clos de la Roche","GC:Clos Saint-Denis","GC:Bonnes-Mares","GC:Musigny","GC:Clos de Vougeot","GC:Echezeaux","GC:Romanee-Saint-Vivant","GC:Corton-Charlemagne","GC:Montrachet","GC:Chevalier-Montrachet Les Demoiselles","1er:Beaune Clos des Ursules (monopole)","1er:Gevrey-Chambertin Clos Saint-Jacques"],
+"Pierre-Yves Colin-Morey":["GC:Montrachet","GC:Batard-Montrachet","GC:Bienvenues-Batard-Montrachet","GC:Chevalier-Montrachet","GC:Corton-Charlemagne","1er:Chassagne-Montrachet Les Caillerets","1er:Meursault Les Perrieres"],
+"Marc Colin":["GC:Montrachet","GC:Batard-Montrachet","1er:Saint-Aubin En Remilly","1er:Saint-Aubin La Chateniere","1er:Chassagne-Montrachet Les Caillerets"],
+"Henri & Gilles Buisson":["GC:Corton Le Rognet","GC:Corton Les Renardes","GC:Corton-Charlemagne"],
+"Sylvain Pataille":["V:Marsannay Clos du Roy","V:Marsannay Les Longeroies","V:Marsannay La Montagne"],
+"Camille Thiriet":["V:Cote de Nuits-Villages"],
+"Berthaut-Gerbet":["GC:Clos de Vougeot","GC:Echezeaux","1er:Fixin Les Arvelets","1er:Fixin Les Clos","1er:Gevrey-Chambertin Les Cazetiers","1er:Chambolle-Musigny Les Petits Monts"],
+"Benoit Chevallier":["1er:Vosne-Romanee Les Beaux Monts","1er:Nuits-Saint-Georges Aux Boudots"],
+"Charles Audoin":["V:Marsannay Clos du Roy","V:Marsannay Les Longeroies","V:Marsannay Champ Salomon"],
+"Fourrier":["GC:Griotte-Chambertin","1er:Gevrey-Chambertin Clos Saint-Jacques","1er:Gevrey-Chambertin Combe aux Moines","1er:Gevrey-Chambertin Cherbaudes","1er:Gevrey-Chambertin Champeaux"],
+"Domaine Felettig":["GC:Echezeaux","1er:Chambolle-Musigny Les Combottes","1er:Chambolle-Musigny Les Fuees","1er:Chambolle-Musigny Les Gruenchers"],
+"Hubert Lignier":["GC:Clos de la Roche","GC:Charmes-Chambertin","1er:Morey-Saint-Denis Les Faconnieres","1er:Morey-Saint-Denis Les Chaffots"],
+"Jobard-Morey":["1er:Meursault Poruzots","1er:Meursault Charmes"],
+"Anne Boisson":["1er:Meursault Genevrieres","1er:Meursault Perrieres","1er:Meursault Charmes"],
+"Ballot-Millot":["1er:Meursault Perrieres","1er:Meursault Genevrieres","1er:Meursault Charmes","1er:Meursault Poruzots"],
+"Buisson-Charles":["1er:Meursault Charmes","1er:Meursault Bouches-Cheres","1er:Meursault Les Cras","1er:Meursault Goutte d'Or"],
+"Camille & Guillaume Boillot":["GC:Corton-Renardes","1er:Meursault Les Charmes","1er:Pommard Chanlins"],
+"Pierre Boisson":["1er:Meursault Perrieres","1er:Meursault Genevrieres","1er:Meursault Charmes"],
+"Pierre Girardin":["GC:Montrachet","GC:Batard-Montrachet","GC:Corton-Charlemagne","GC:Echezeaux","GC:Richebourg","1er:Meursault Perrieres","1er:Volnay Clos des Chenes","1er:Pommard Les Rugiens"],
+"Pierre Morey":["GC:Batard-Montrachet","1er:Meursault Perrieres","1er:Meursault Genevrieres"],
+"Alex Moreau":["GC:Batard-Montrachet","GC:Chevalier-Montrachet","1er:Chassagne-Montrachet Les Grandes Ruchottes","1er:Chassagne-Montrachet Morgeot"],
+"Ramonet":["GC:Le Montrachet","GC:Batard-Montrachet","GC:Bienvenues-Batard-Montrachet","GC:Chevalier-Montrachet","1er:Chassagne-Montrachet Les Ruchottes","1er:Chassagne-Montrachet Les Caillerets","1er:Chassagne-Montrachet Morgeot"],
+"Vincent Dancer":["GC:Chevalier-Montrachet","1er:Chassagne-Montrachet La Romanee","1er:Meursault Perrieres","1er:Pommard Les Pezerolles"],
+"Jacques Carillon":["GC:Bienvenues-Batard-Montrachet","1er:Puligny-Montrachet Les Perrieres","1er:Puligny-Montrachet Les Champs Canet"],
+"Thomas-Collardot":["1er:Puligny-Montrachet Les Folatieres","1er:Puligny-Montrachet Hameau de Blagny"],
+"Albert Bichot":["GC:Chambertin","GC:Richebourg","GC:Echezeaux","GC:Grands-Echezeaux","GC:Clos de Vougeot","GC:Corton Clos des Marechaudes (monopole)","GC:Corton-Charlemagne","1er:Vosne-Romanee Aux Malconsorts","1er:Beaune Clos des Mouches"],
+"Bouchard Pere & Fils":["GC:Le Montrachet","GC:Chevalier-Montrachet La Cabotte","GC:Batard-Montrachet","GC:Corton-Charlemagne","GC:Le Corton","GC:Chambertin","GC:Chambertin-Clos de Beze","GC:Bonnes-Mares","GC:Clos de Vougeot","1er:Beaune Greves Vigne de l'Enfant Jesus","1er:Volnay Caillerets Ancienne Cuvee Carnot"],
+"Bachelet-Monnot":["GC:Batard-Montrachet","GC:Bienvenues-Batard-Montrachet","1er:Maranges La Fussiere","1er:Saint-Aubin En Remilly","1er:Puligny-Montrachet Les Referts"],
+"Nicolas Perrault":["1er:Maranges Les Clos des Rois","1er:Maranges La Fussiere","1er:Maranges Clos des Loyeres"],
+"Alain Gras":["V:Saint-Romain Blanc","V:Saint-Romain Rouge"],
+"Joseph Colin":["1er:Saint-Aubin En Remilly","1er:Saint-Aubin La Chateniere","1er:Puligny-Montrachet La Garenne","1er:Chassagne-Montrachet Les Caillerets"],
+"Lafouge":["1er:Auxey-Duresses Les Duresses","1er:Auxey-Duresses La Chapelle","1er:Pommard Les Chanlins"],
+"Pierre Guillemot":["1er:Savigny-les-Beaune Les Serpentieres","1er:Savigny-les-Beaune Aux Gravains"],
+"Rapet":["GC:Corton","GC:Corton-Charlemagne","1er:Pernand-Vergelesses Ile des Vergelesses","1er:Pernand-Vergelesses En Caradeux"],
+"Yvon Clerget":["GC:Clos de Vougeot","1er:Volnay Clos du Verseuil (monopole)","1er:Volnay Les Caillerets","1er:Volnay Les Santenots","1er:Pommard Les Rugiens"],
+"Maxime Cottenceau":["1er:Montagny Montcuchot","1er:Montagny Les Vignes Longues","1er:Montagny Vigne du Soleil"]
+};
 
-// =====================================================
-// GRAND CRU VINEYARDS
-// =====================================================
-const grandCrus = [
-  // Cote de Nuits
-  { name: "Chambertin", lat: 47.2220, lng: 4.9720, aoc: "Gevrey-Chambertin" },
-  { name: "Chambertin-Clos de Beze", lat: 47.2250, lng: 4.9715, aoc: "Gevrey-Chambertin" },
-  { name: "Chapelle-Chambertin", lat: 47.2235, lng: 4.9730, aoc: "Gevrey-Chambertin" },
-  { name: "Charmes-Chambertin", lat: 47.2200, lng: 4.9735, aoc: "Gevrey-Chambertin" },
-  { name: "Griotte-Chambertin", lat: 47.2215, lng: 4.9725, aoc: "Gevrey-Chambertin" },
-  { name: "Latricieres-Chambertin", lat: 47.2190, lng: 4.9730, aoc: "Gevrey-Chambertin" },
-  { name: "Mazis-Chambertin", lat: 47.2260, lng: 4.9710, aoc: "Gevrey-Chambertin" },
-  { name: "Mazoyeres-Chambertin", lat: 47.2195, lng: 4.9740, aoc: "Gevrey-Chambertin" },
-  { name: "Ruchottes-Chambertin", lat: 47.2265, lng: 4.9705, aoc: "Gevrey-Chambertin" },
-  { name: "Clos de la Roche", lat: 47.2085, lng: 4.9640, aoc: "Morey-Saint-Denis" },
-  { name: "Clos Saint-Denis", lat: 47.2065, lng: 4.9635, aoc: "Morey-Saint-Denis" },
-  { name: "Clos de Tart", lat: 47.2055, lng: 4.9630, aoc: "Morey-Saint-Denis" },
-  { name: "Clos des Lambrays", lat: 47.2075, lng: 4.9638, aoc: "Morey-Saint-Denis" },
-  { name: "Bonnes-Mares", lat: 47.1975, lng: 4.9580, aoc: "Chambolle-Musigny" },
-  { name: "Musigny", lat: 47.1905, lng: 4.9570, aoc: "Chambolle-Musigny" },
-  { name: "Clos de Vougeot", lat: 47.1770, lng: 4.9565, aoc: "Vougeot" },
-  { name: "Grands Echezeaux", lat: 47.1740, lng: 4.9555, aoc: "Vosne-Romanee" },
-  { name: "Echezeaux", lat: 47.1720, lng: 4.9545, aoc: "Vosne-Romanee" },
-  { name: "Richebourg", lat: 47.1680, lng: 4.9560, aoc: "Vosne-Romanee" },
-  { name: "Romanee-Saint-Vivant", lat: 47.1665, lng: 4.9550, aoc: "Vosne-Romanee" },
-  { name: "Romanee-Conti", lat: 47.1645, lng: 4.9535, aoc: "Vosne-Romanee" },
-  { name: "La Romanee", lat: 47.1655, lng: 4.9540, aoc: "Vosne-Romanee" },
-  { name: "La Tache", lat: 47.1620, lng: 4.9525, aoc: "Vosne-Romanee" },
-  { name: "La Grande Rue", lat: 47.1640, lng: 4.9530, aoc: "Vosne-Romanee" },
-  // Cote de Beaune
-  { name: "Corton", lat: 47.0770, lng: 4.8620, aoc: "Pernand-Vergelesses" },
-  { name: "Corton-Charlemagne", lat: 47.0755, lng: 4.8560, aoc: "Pernand-Vergelesses" },
-  { name: "Chevalier-Montrachet", lat: 46.9530, lng: 4.7560, aoc: "Puligny-Montrachet" },
-  { name: "Montrachet", lat: 46.9510, lng: 4.7550, aoc: "Puligny-Montrachet" },
-  { name: "Batard-Montrachet", lat: 46.9495, lng: 4.7545, aoc: "Puligny-Montrachet" },
-  { name: "Bienvenues-Batard-Montrachet", lat: 46.9505, lng: 4.7555, aoc: "Puligny-Montrachet" },
-  { name: "Criots-Batard-Montrachet", lat: 46.9480, lng: 4.7535, aoc: "Chassagne-Montrachet" },
-];
-
-// =====================================================
-// MICHELIN ESTATES (unchanged data)
-// =====================================================
 const estates = [
-  { name: "Cecile Tremblay", village: "Morey-Saint-Denis", region: "Cote de Nuits", grade: 3 },
-  { name: "Dugat-Py", village: "Gevrey-Chambertin", region: "Cote de Nuits", grade: 3 },
-  { name: "Roumier", village: "Chambolle-Musigny", region: "Cote de Nuits", grade: 3 },
-  { name: "Domaine de la Romanee-Conti", village: "Vosne-Romanee", region: "Cote de Nuits", grade: 3 },
-  { name: "Domaine Leroy", village: "Vosne-Romanee", region: "Cote de Nuits", grade: 3 },
-  { name: "Domaine d'Auvenay", village: "Saint-Romain", region: "Cote de Beaune", grade: 3 },
-  { name: "Coche-Dury", village: "Meursault", region: "Cote de Beaune", grade: 3 },
-  { name: "Jean-Marc & Thomas Bouley", village: "Volnay", region: "Cote de Beaune", grade: 3 },
-  { name: "Hubert Lamy", village: "Saint-Aubin", region: "Cote de Beaune", grade: 3 },
-  { name: "Dujac", village: "Morey-Saint-Denis", region: "Cote de Nuits", grade: 2 },
-  { name: "Denis Mortet", village: "Gevrey-Chambertin", region: "Cote de Nuits", grade: 2 },
-  { name: "Georges Mugneret-Gibourg", village: "Vosne-Romanee", region: "Cote de Nuits", grade: 2 },
-  { name: "Bruno Clair", village: "Marsannay", region: "Cote de Nuits", grade: 2 },
-  { name: "Gerard Mugneret", village: "Vosne-Romanee", region: "Cote de Nuits", grade: 2 },
-  { name: "Jacques-Frederic Mugnier", village: "Chambolle-Musigny", region: "Cote de Nuits", grade: 2 },
-  { name: "Jean-Claude Bachelet", village: "Saint-Aubin", region: "Cote de Beaune", grade: 2 },
-  { name: "Paul Pillot", village: "Chassagne-Montrachet", region: "Cote de Beaune", grade: 2 },
-  { name: "Arnaud Ente", village: "Meursault", region: "Cote de Beaune", grade: 2 },
-  { name: "Benoit Ente", village: "Puligny-Montrachet", region: "Cote de Beaune", grade: 2 },
-  { name: "Benoit Moreau", village: "Chassagne-Montrachet", region: "Cote de Beaune", grade: 2 },
-  { name: "Lamy-Caillat", village: "Chassagne-Montrachet", region: "Cote de Beaune", grade: 2 },
-  { name: "Bonneau du Martray", village: "Pernand-Vergelesses", region: "Cote de Beaune", grade: 2 },
-  { name: "Domaine des Comtes Lafon", village: "Meursault", region: "Cote de Beaune", grade: 2 },
-  { name: "Domaine des Croix", village: "Beaune", region: "Cote de Beaune", grade: 2 },
-  { name: "Domaine Leflaive", village: "Puligny-Montrachet", region: "Cote de Beaune", grade: 2 },
-  { name: "Etienne Sauzet", village: "Puligny-Montrachet", region: "Cote de Beaune", grade: 2 },
-  { name: "Jean-Marc Vincent", village: "Santenay", region: "Cote de Beaune", grade: 2 },
-  { name: "Bruno Lorenzon", village: "Mercurey", region: "Cote Chalonnaise", grade: 2 },
-  { name: "Dureuil-Janthial", village: "Rully", region: "Cote Chalonnaise", grade: 2 },
-  { name: "Armand Rousseau", village: "Gevrey-Chambertin", region: "Cote de Nuits", grade: 1 },
-  { name: "Claude Dugat", village: "Gevrey-Chambertin", region: "Cote de Nuits", grade: 1 },
-  { name: "Denis Bachelet", village: "Gevrey-Chambertin", region: "Cote de Nuits", grade: 1 },
-  { name: "Duroche", village: "Gevrey-Chambertin", region: "Cote de Nuits", grade: 1 },
-  { name: "Joseph Roty", village: "Gevrey-Chambertin", region: "Cote de Nuits", grade: 1 },
-  { name: "Trapet", village: "Gevrey-Chambertin", region: "Cote de Nuits", grade: 1 },
-  { name: "Comte Georges de Vogue", village: "Chambolle-Musigny", region: "Cote de Nuits", grade: 1 },
-  { name: "Ghislaine Barthod", village: "Chambolle-Musigny", region: "Cote de Nuits", grade: 1 },
-  { name: "Hudelot-Noellat", village: "Chambolle-Musigny", region: "Cote de Nuits", grade: 1 },
-  { name: "Louis Boillot", village: "Chambolle-Musigny", region: "Cote de Nuits", grade: 1 },
-  { name: "Clos de Tart", village: "Morey-Saint-Denis", region: "Cote de Nuits", grade: 1 },
-  { name: "Domaine des Lambrays", village: "Morey-Saint-Denis", region: "Cote de Nuits", grade: 1 },
-  { name: "Domaine Ponsot", village: "Morey-Saint-Denis", region: "Cote de Nuits", grade: 1 },
-  { name: "Arnoux-Lachaux", village: "Vosne-Romanee", region: "Cote de Nuits", grade: 1 },
-  { name: "Domaine Sylvain Cathiard", village: "Vosne-Romanee", region: "Cote de Nuits", grade: 1 },
-  { name: "Meo-Camuzet", village: "Vosne-Romanee", region: "Cote de Nuits", grade: 1 },
-  { name: "Chateau de la Tour", village: "Vougeot", region: "Cote de Nuits", grade: 1 },
-  { name: "Faiveley", village: "Nuits-Saint-Georges", region: "Cote de Nuits", grade: 1 },
-  { name: "Bernard-Bonin", village: "Meursault", region: "Cote de Beaune", grade: 1 },
-  { name: "Henri Boillot", village: "Meursault", region: "Cote de Beaune", grade: 1 },
-  { name: "Henri Germain", village: "Meursault", region: "Cote de Beaune", grade: 1 },
-  { name: "Jean-Marc Roulot", village: "Meursault", region: "Cote de Beaune", grade: 1 },
-  { name: "Vincent Girardin", village: "Meursault", region: "Cote de Beaune", grade: 1 },
-  { name: "Domaine de Montille", village: "Volnay", region: "Cote de Beaune", grade: 1 },
-  { name: "Marquis d'Angerville", village: "Volnay", region: "Cote de Beaune", grade: 1 },
-  { name: "Michel Lafarge", village: "Volnay", region: "Cote de Beaune", grade: 1 },
-  { name: "Roblet-Monnot", village: "Volnay", region: "Cote de Beaune", grade: 1 },
-  { name: "Benjamin Leroux", village: "Beaune", region: "Cote de Beaune", grade: 1 },
-  { name: "Joseph Drouhin", village: "Beaune", region: "Cote de Beaune", grade: 1 },
-  { name: "Louis Jadot", village: "Beaune", region: "Cote de Beaune", grade: 1 },
-  { name: "Pierre-Yves Colin-Morey", village: "Chassagne-Montrachet", region: "Cote de Beaune", grade: 1 },
-  { name: "Marc Colin", village: "Saint-Aubin", region: "Cote de Beaune", grade: 1 },
-  { name: "Henri & Gilles Buisson", village: "Saint-Romain", region: "Cote de Beaune", grade: 1 },
-  { name: "Sylvain Pataille", village: "Marsannay", region: "Cote de Nuits", grade: "s" },
-  { name: "Camille Thiriet", village: "Nuits-Saint-Georges", region: "Cote de Nuits", grade: "s" },
-  { name: "Berthaut-Gerbet", village: "Fixin", region: "Cote de Nuits", grade: "s" },
-  { name: "Benoit Chevallier", village: "Vosne-Romanee", region: "Cote de Nuits", grade: "s" },
-  { name: "Charles Audoin", village: "Marsannay", region: "Cote de Nuits", grade: "s" },
-  { name: "Fourrier", village: "Gevrey-Chambertin", region: "Cote de Nuits", grade: "s" },
-  { name: "Domaine Felettig", village: "Chambolle-Musigny", region: "Cote de Nuits", grade: "s" },
-  { name: "Hubert Lignier", village: "Morey-Saint-Denis", region: "Cote de Nuits", grade: "s" },
-  { name: "Jobard-Morey", village: "Meursault", region: "Cote de Beaune", grade: "s" },
-  { name: "Anne Boisson", village: "Meursault", region: "Cote de Beaune", grade: "s" },
-  { name: "Ballot-Millot", village: "Meursault", region: "Cote de Beaune", grade: "s" },
-  { name: "Buisson-Charles", village: "Meursault", region: "Cote de Beaune", grade: "s" },
-  { name: "Camille & Guillaume Boillot", village: "Meursault", region: "Cote de Beaune", grade: "s" },
-  { name: "Pierre Boisson", village: "Meursault", region: "Cote de Beaune", grade: "s" },
-  { name: "Pierre Girardin", village: "Meursault", region: "Cote de Beaune", grade: "s" },
-  { name: "Pierre Morey", village: "Meursault", region: "Cote de Beaune", grade: "s" },
-  { name: "Alex Moreau", village: "Chassagne-Montrachet", region: "Cote de Beaune", grade: "s" },
-  { name: "Ramonet", village: "Chassagne-Montrachet", region: "Cote de Beaune", grade: "s" },
-  { name: "Vincent Dancer", village: "Chassagne-Montrachet", region: "Cote de Beaune", grade: "s" },
-  { name: "Jacques Carillon", village: "Puligny-Montrachet", region: "Cote de Beaune", grade: "s" },
-  { name: "Thomas-Collardot", village: "Puligny-Montrachet", region: "Cote de Beaune", grade: "s" },
-  { name: "Albert Bichot", village: "Beaune", region: "Cote de Beaune", grade: "s" },
-  { name: "Bouchard Pere & Fils", village: "Beaune", region: "Cote de Beaune", grade: "s" },
-  { name: "Bachelet-Monnot", village: "Maranges", region: "Cote de Beaune", grade: "s" },
-  { name: "Nicolas Perrault", village: "Maranges", region: "Cote de Beaune", grade: "s" },
-  { name: "Alain Gras", village: "Saint-Romain", region: "Cote de Beaune", grade: "s" },
-  { name: "Joseph Colin", village: "Saint-Aubin", region: "Cote de Beaune", grade: "s" },
-  { name: "Lafouge", village: "Auxey-Duresses", region: "Cote de Beaune", grade: "s" },
-  { name: "Pierre Guillemot", village: "Savigny-les-Beaune", region: "Cote de Beaune", grade: "s" },
-  { name: "Rapet", village: "Pernand-Vergelesses", region: "Cote de Beaune", grade: "s" },
-  { name: "Yvon Clerget", village: "Pommard", region: "Cote de Beaune", grade: "s" },
-  { name: "Maxime Cottenceau", village: "Montagny", region: "Cote Chalonnaise", grade: "s" },
+  {name:"Cecile Tremblay",village:"Morey-Saint-Denis",region:"Cote de Nuits",grade:3},
+  {name:"Dugat-Py",village:"Gevrey-Chambertin",region:"Cote de Nuits",grade:3},
+  {name:"Roumier",village:"Chambolle-Musigny",region:"Cote de Nuits",grade:3},
+  {name:"Domaine de la Romanee-Conti",village:"Vosne-Romanee",region:"Cote de Nuits",grade:3},
+  {name:"Domaine Leroy",village:"Vosne-Romanee",region:"Cote de Nuits",grade:3},
+  {name:"Domaine d'Auvenay",village:"Saint-Romain",region:"Cote de Beaune",grade:3},
+  {name:"Coche-Dury",village:"Meursault",region:"Cote de Beaune",grade:3},
+  {name:"Jean-Marc & Thomas Bouley",village:"Volnay",region:"Cote de Beaune",grade:3},
+  {name:"Hubert Lamy",village:"Saint-Aubin",region:"Cote de Beaune",grade:3},
+  {name:"Dujac",village:"Morey-Saint-Denis",region:"Cote de Nuits",grade:2},
+  {name:"Denis Mortet",village:"Gevrey-Chambertin",region:"Cote de Nuits",grade:2},
+  {name:"Georges Mugneret-Gibourg",village:"Vosne-Romanee",region:"Cote de Nuits",grade:2},
+  {name:"Bruno Clair",village:"Marsannay",region:"Cote de Nuits",grade:2},
+  {name:"Gerard Mugneret",village:"Vosne-Romanee",region:"Cote de Nuits",grade:2},
+  {name:"Jacques-Frederic Mugnier",village:"Chambolle-Musigny",region:"Cote de Nuits",grade:2},
+  {name:"Jean-Claude Bachelet",village:"Saint-Aubin",region:"Cote de Beaune",grade:2},
+  {name:"Paul Pillot",village:"Chassagne-Montrachet",region:"Cote de Beaune",grade:2},
+  {name:"Arnaud Ente",village:"Meursault",region:"Cote de Beaune",grade:2},
+  {name:"Benoit Ente",village:"Puligny-Montrachet",region:"Cote de Beaune",grade:2},
+  {name:"Benoit Moreau",village:"Chassagne-Montrachet",region:"Cote de Beaune",grade:2},
+  {name:"Lamy-Caillat",village:"Chassagne-Montrachet",region:"Cote de Beaune",grade:2},
+  {name:"Bonneau du Martray",village:"Pernand-Vergelesses",region:"Cote de Beaune",grade:2},
+  {name:"Domaine des Comtes Lafon",village:"Meursault",region:"Cote de Beaune",grade:2},
+  {name:"Domaine des Croix",village:"Beaune",region:"Cote de Beaune",grade:2},
+  {name:"Domaine Leflaive",village:"Puligny-Montrachet",region:"Cote de Beaune",grade:2},
+  {name:"Etienne Sauzet",village:"Puligny-Montrachet",region:"Cote de Beaune",grade:2},
+  {name:"Jean-Marc Vincent",village:"Santenay",region:"Cote de Beaune",grade:2},
+  {name:"Bruno Lorenzon",village:"Mercurey",region:"Cote Chalonnaise",grade:2},
+  {name:"Dureuil-Janthial",village:"Rully",region:"Cote Chalonnaise",grade:2},
+  {name:"Armand Rousseau",village:"Gevrey-Chambertin",region:"Cote de Nuits",grade:1},
+  {name:"Claude Dugat",village:"Gevrey-Chambertin",region:"Cote de Nuits",grade:1},
+  {name:"Denis Bachelet",village:"Gevrey-Chambertin",region:"Cote de Nuits",grade:1},
+  {name:"Duroche",village:"Gevrey-Chambertin",region:"Cote de Nuits",grade:1},
+  {name:"Joseph Roty",village:"Gevrey-Chambertin",region:"Cote de Nuits",grade:1},
+  {name:"Trapet",village:"Gevrey-Chambertin",region:"Cote de Nuits",grade:1},
+  {name:"Comte Georges de Vogue",village:"Chambolle-Musigny",region:"Cote de Nuits",grade:1},
+  {name:"Ghislaine Barthod",village:"Chambolle-Musigny",region:"Cote de Nuits",grade:1},
+  {name:"Hudelot-Noellat",village:"Chambolle-Musigny",region:"Cote de Nuits",grade:1},
+  {name:"Louis Boillot",village:"Chambolle-Musigny",region:"Cote de Nuits",grade:1},
+  {name:"Clos de Tart",village:"Morey-Saint-Denis",region:"Cote de Nuits",grade:1},
+  {name:"Domaine des Lambrays",village:"Morey-Saint-Denis",region:"Cote de Nuits",grade:1},
+  {name:"Domaine Ponsot",village:"Morey-Saint-Denis",region:"Cote de Nuits",grade:1},
+  {name:"Arnoux-Lachaux",village:"Vosne-Romanee",region:"Cote de Nuits",grade:1},
+  {name:"Domaine Sylvain Cathiard",village:"Vosne-Romanee",region:"Cote de Nuits",grade:1},
+  {name:"Meo-Camuzet",village:"Vosne-Romanee",region:"Cote de Nuits",grade:1},
+  {name:"Chateau de la Tour",village:"Vougeot",region:"Cote de Nuits",grade:1},
+  {name:"Faiveley",village:"Nuits-Saint-Georges",region:"Cote de Nuits",grade:1},
+  {name:"Bernard-Bonin",village:"Meursault",region:"Cote de Beaune",grade:1},
+  {name:"Henri Boillot",village:"Meursault",region:"Cote de Beaune",grade:1},
+  {name:"Henri Germain",village:"Meursault",region:"Cote de Beaune",grade:1},
+  {name:"Jean-Marc Roulot",village:"Meursault",region:"Cote de Beaune",grade:1},
+  {name:"Vincent Girardin",village:"Meursault",region:"Cote de Beaune",grade:1},
+  {name:"Domaine de Montille",village:"Volnay",region:"Cote de Beaune",grade:1},
+  {name:"Marquis d'Angerville",village:"Volnay",region:"Cote de Beaune",grade:1},
+  {name:"Michel Lafarge",village:"Volnay",region:"Cote de Beaune",grade:1},
+  {name:"Roblet-Monnot",village:"Volnay",region:"Cote de Beaune",grade:1},
+  {name:"Benjamin Leroux",village:"Beaune",region:"Cote de Beaune",grade:1},
+  {name:"Joseph Drouhin",village:"Beaune",region:"Cote de Beaune",grade:1},
+  {name:"Louis Jadot",village:"Beaune",region:"Cote de Beaune",grade:1},
+  {name:"Pierre-Yves Colin-Morey",village:"Chassagne-Montrachet",region:"Cote de Beaune",grade:1},
+  {name:"Marc Colin",village:"Saint-Aubin",region:"Cote de Beaune",grade:1},
+  {name:"Henri & Gilles Buisson",village:"Saint-Romain",region:"Cote de Beaune",grade:1},
+  {name:"Sylvain Pataille",village:"Marsannay",region:"Cote de Nuits",grade:"s"},
+  {name:"Camille Thiriet",village:"Nuits-Saint-Georges",region:"Cote de Nuits",grade:"s"},
+  {name:"Berthaut-Gerbet",village:"Fixin",region:"Cote de Nuits",grade:"s"},
+  {name:"Benoit Chevallier",village:"Vosne-Romanee",region:"Cote de Nuits",grade:"s"},
+  {name:"Charles Audoin",village:"Marsannay",region:"Cote de Nuits",grade:"s"},
+  {name:"Fourrier",village:"Gevrey-Chambertin",region:"Cote de Nuits",grade:"s"},
+  {name:"Domaine Felettig",village:"Chambolle-Musigny",region:"Cote de Nuits",grade:"s"},
+  {name:"Hubert Lignier",village:"Morey-Saint-Denis",region:"Cote de Nuits",grade:"s"},
+  {name:"Jobard-Morey",village:"Meursault",region:"Cote de Beaune",grade:"s"},
+  {name:"Anne Boisson",village:"Meursault",region:"Cote de Beaune",grade:"s"},
+  {name:"Ballot-Millot",village:"Meursault",region:"Cote de Beaune",grade:"s"},
+  {name:"Buisson-Charles",village:"Meursault",region:"Cote de Beaune",grade:"s"},
+  {name:"Camille & Guillaume Boillot",village:"Meursault",region:"Cote de Beaune",grade:"s"},
+  {name:"Pierre Boisson",village:"Meursault",region:"Cote de Beaune",grade:"s"},
+  {name:"Pierre Girardin",village:"Meursault",region:"Cote de Beaune",grade:"s"},
+  {name:"Pierre Morey",village:"Meursault",region:"Cote de Beaune",grade:"s"},
+  {name:"Alex Moreau",village:"Chassagne-Montrachet",region:"Cote de Beaune",grade:"s"},
+  {name:"Ramonet",village:"Chassagne-Montrachet",region:"Cote de Beaune",grade:"s"},
+  {name:"Vincent Dancer",village:"Chassagne-Montrachet",region:"Cote de Beaune",grade:"s"},
+  {name:"Jacques Carillon",village:"Puligny-Montrachet",region:"Cote de Beaune",grade:"s"},
+  {name:"Thomas-Collardot",village:"Puligny-Montrachet",region:"Cote de Beaune",grade:"s"},
+  {name:"Albert Bichot",village:"Beaune",region:"Cote de Beaune",grade:"s"},
+  {name:"Bouchard Pere & Fils",village:"Beaune",region:"Cote de Beaune",grade:"s"},
+  {name:"Bachelet-Monnot",village:"Maranges",region:"Cote de Beaune",grade:"s"},
+  {name:"Nicolas Perrault",village:"Maranges",region:"Cote de Beaune",grade:"s"},
+  {name:"Alain Gras",village:"Saint-Romain",region:"Cote de Beaune",grade:"s"},
+  {name:"Joseph Colin",village:"Saint-Aubin",region:"Cote de Beaune",grade:"s"},
+  {name:"Lafouge",village:"Auxey-Duresses",region:"Cote de Beaune",grade:"s"},
+  {name:"Pierre Guillemot",village:"Savigny-les-Beaune",region:"Cote de Beaune",grade:"s"},
+  {name:"Rapet",village:"Pernand-Vergelesses",region:"Cote de Beaune",grade:"s"},
+  {name:"Yvon Clerget",village:"Pommard",region:"Cote de Beaune",grade:"s"},
+  {name:"Maxime Cottenceau",village:"Montagny",region:"Cote Chalonnaise",grade:"s"},
 ];
 
-const gradeColors = { 3: "#b8860b", 2: "#7c3aed", 1: "#2563eb", "s": "#059669" };
-const gradeLabels = { 3: "3 Grapes", 2: "2 Grapes", 1: "1 Grape", "s": "Selected" };
-const gradeSizes = { 3: 12, 2: 9, 1: 7, "s": 6 };
+const gradeColors={3:"#b8860b",2:"#7c3aed",1:"#2563eb","s":"#059669"};
+const gradeLabels={3:"3 Grapes",2:"2 Grapes",1:"1 Grape","s":"Selected"};
+const gradeSizes={3:12,2:9,1:7,"s":6};
 
-// =====================================================
-// MAP INIT
-// =====================================================
-const map = L.map('map', { zoomControl: false, attributionControl: true }).setView([47.05, 4.88], 12);
-L.control.zoom({ position: 'topright' }).addTo(map);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-  attribution: '&copy; OSM &copy; CARTO', maxZoom: 18
-}).addTo(map);
+// Map
+const map=L.map('map',{zoomControl:false,attributionControl:true}).setView([47.05,4.88],12);
+L.control.zoom({position:'topright'}).addTo(map);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'&copy; OSM &copy; CARTO',maxZoom:18}).addTo(map);
 
-// =====================================================
-// LAYER 1: APPELLATION ZONES
-// =====================================================
-const aocLayer = L.layerGroup();
-
-appellations.forEach(aoc => {
-  const color = regionColors[aoc.region];
-  const poly = L.polygon(aoc.coords, {
-    color: color, weight: 1.5, opacity: 0.7,
-    fillColor: color, fillOpacity: 0.12
-  });
-  poly.bindPopup(`<div style="font-family:system-ui"><b>${aoc.name} AOC</b><br><span style="color:#888;font-size:12px">Village Appellation</span></div>`, { closeButton: false });
-
-  // AOC label
-  const center = poly.getBounds().getCenter();
-  const label = L.marker(center, {
-    interactive: false,
-    icon: L.divIcon({
-      className: '',
-      html: `<div style="color:${color};font-size:10px;font-weight:700;white-space:nowrap;text-shadow:0 0 4px #fff,0 0 8px #fff;pointer-events:none;opacity:0.8">${aoc.name}</div>`,
-      iconSize: [0,0], iconAnchor: [0, 6]
-    })
-  });
-
-  aocLayer.addLayer(poly);
-  aocLayer.addLayer(label);
+// AOC layer
+const aocLayer=L.layerGroup();
+appellations.forEach(aoc=>{
+  const c=regionColors[aoc.region];
+  const p=L.polygon(aoc.coords,{color:c,weight:1.5,opacity:0.7,fillColor:c,fillOpacity:0.12});
+  p.bindPopup(`<b>${aoc.name} AOC</b><br><span style="color:#888;font-size:12px">Village Appellation</span>`,{closeButton:false});
+  const center=p.getBounds().getCenter();
+  aocLayer.addLayer(p);
+  aocLayer.addLayer(L.marker(center,{interactive:false,icon:L.divIcon({className:'',html:`<div style="color:${c};font-size:10px;font-weight:700;white-space:nowrap;text-shadow:0 0 4px #fff,0 0 8px #fff;pointer-events:none;opacity:0.8">${aoc.name}</div>`,iconSize:[0,0],iconAnchor:[0,6]})}));
 });
 aocLayer.addTo(map);
 
-// =====================================================
-// LAYER 2: GRAND CRU
-// =====================================================
-const gcLayer = L.layerGroup();
-
-grandCrus.forEach(gc => {
-  // Diamond marker
-  const marker = L.circleMarker([gc.lat, gc.lng], {
-    radius: 4, fillColor: "#8b1a2b", color: "#8b1a2b",
-    weight: 1.5, opacity: 0.9, fillOpacity: 0.5
-  });
-  marker.bindPopup(`<div style="font-family:system-ui"><b>${gc.name}</b><br><span style="color:#8b1a2b;font-size:12px;font-weight:600">Grand Cru</span><br><span style="color:#888;font-size:11px">${gc.aoc}</span></div>`, { closeButton: false });
-  gcLayer.addLayer(marker);
-
-  // Label (show at zoom >= 14)
-  const label = L.marker([gc.lat, gc.lng], {
-    interactive: false,
-    icon: L.divIcon({
-      className: 'gc-label',
-      html: gc.name,
-      iconSize: [0,0], iconAnchor: [-6, 4]
-    })
-  });
-  label._isGcLabel = true;
+// GC layer
+const gcLayer=L.layerGroup();
+grandCrus.forEach(gc=>{
+  const m=L.circleMarker([gc.lat,gc.lng],{radius:4,fillColor:"#8b1a2b",color:"#8b1a2b",weight:1.5,opacity:0.9,fillOpacity:0.5});
+  m.bindPopup(`<b>${gc.name}</b><br><span style="color:#8b1a2b;font-size:12px;font-weight:600">Grand Cru</span>`,{closeButton:false});
+  m._gcName=gc.name;
+  gcLayer.addLayer(m);
+  const label=L.marker([gc.lat,gc.lng],{interactive:false,icon:L.divIcon({className:'gc-label',html:gc.name,iconSize:[0,0],iconAnchor:[-6,4]})});
+  label._isGcLabel=true;
   gcLayer.addLayer(label);
 });
 gcLayer.addTo(map);
+function updateGcLabels(){const z=map.getZoom();gcLayer.eachLayer(l=>{if(l._isGcLabel){const el=l.getElement();if(el)el.style.display=z>=14?'':'none';}});}
+map.on('zoomend',updateGcLabels);
+setTimeout(updateGcLabels,100);
 
-// Show/hide GC labels based on zoom
-function updateGcLabels() {
-  const zoom = map.getZoom();
-  gcLayer.eachLayer(l => {
-    if (l._isGcLabel) {
-      const el = l.getElement();
-      if (el) el.style.display = zoom >= 14 ? '' : 'none';
-    }
-  });
-}
-map.on('zoomend', updateGcLabels);
-setTimeout(updateGcLabels, 100);
+// Estate markers
+const markers=[];
+function getAocCenter(v){const a=appellations.find(x=>x.name===v);if(!a)return null;const p=L.polygon(a.coords);const c=p.getBounds().getCenter();return[c.lat,c.lng];}
+function getOffset(e){const s=estates.filter(x=>x.village===e.village);const i=s.indexOf(e);if(s.length<=1)return[0,0];const a=(i/s.length)*Math.PI*2;const r=0.002+(s.length>8?0.001*Math.floor(i/8):0);return[Math.cos(a)*r,Math.sin(a)*r];}
 
-// =====================================================
-// LAYER 3: MICHELIN ESTATES
-// =====================================================
-const markers = [];
-
-// Get center of AOC polygon for estate placement
-function getAocCenter(villageName) {
-  const aoc = appellations.find(a => a.name === villageName);
-  if (!aoc) return null;
-  const poly = L.polygon(aoc.coords);
-  const c = poly.getBounds().getCenter();
-  return [c.lat, c.lng];
-}
-
-function getOffset(estate) {
-  const same = estates.filter(e => e.village === estate.village);
-  const idx = same.indexOf(estate);
-  if (same.length <= 1) return [0,0];
-  const angle = (idx / same.length) * Math.PI * 2;
-  const r = 0.002 + (same.length > 8 ? 0.001 * Math.floor(idx/8) : 0);
-  return [Math.cos(angle)*r, Math.sin(angle)*r];
-}
-
-estates.forEach(estate => {
-  const coords = getAocCenter(estate.village);
-  if (!coords) return;
-  const off = getOffset(estate);
-  const color = gradeColors[estate.grade];
-  const marker = L.circleMarker([coords[0]+off[0], coords[1]+off[1]], {
-    radius: gradeSizes[estate.grade],
-    fillColor: color, color: color,
-    weight: estate.grade === 3 ? 2.5 : 1.5,
-    opacity: 0.95, fillOpacity: 0.75
-  }).addTo(map);
-  const emoji = estate.grade === 3 ? "&#127815;&#127815;&#127815;" : estate.grade === 2 ? "&#127815;&#127815;" : estate.grade === 1 ? "&#127815;" : "&#9733;";
-  marker.bindPopup(`<div style="font-family:system-ui;min-width:160px"><div style="font-size:15px;font-weight:700;color:#222">${estate.name}</div><div style="font-size:12px;color:#888;margin:3px 0">${estate.village} AOC &middot; ${estate.region}</div><div style="font-size:13px;color:${color};font-weight:600">${emoji} ${gradeLabels[estate.grade]}</div></div>`, { closeButton: false });
-  marker.estateData = estate;
+estates.forEach(estate=>{
+  const coords=getAocCenter(estate.village);if(!coords)return;
+  const off=getOffset(estate);const color=gradeColors[estate.grade];
+  const marker=L.circleMarker([coords[0]+off[0],coords[1]+off[1]],{radius:gradeSizes[estate.grade],fillColor:color,color:color,weight:estate.grade===3?2.5:1.5,opacity:0.95,fillOpacity:0.75}).addTo(map);
+  marker.on('click',()=>showDetail(estates.indexOf(estate)));
+  marker.estateData=estate;
   markers.push(marker);
 });
 
-// =====================================================
-// LAYER TOGGLES
-// =====================================================
-const btnAoc = document.getElementById('btn-aoc');
-const btnGc = document.getElementById('btn-gc');
-const btnLegend = document.getElementById('btn-legend');
+// Sheet drag
+const sheet=document.getElementById('sheet');const handle=document.getElementById('sheet-handle');
+let sheetState='peek',startY=0,startTranslate=0,isDragging=false;
+function getSheetTranslate(){const h=sheet.offsetHeight;if(sheetState==='peek')return h-140;if(sheetState==='half')return h*0.5;return 0;}
+handle.addEventListener('touchstart',e=>{isDragging=true;startY=e.touches[0].clientY;startTranslate=getSheetTranslate();sheet.style.transition='none';},{passive:true});
+document.addEventListener('touchmove',e=>{if(!isDragging)return;sheet.style.transform=`translateY(${Math.max(0,startTranslate+e.touches[0].clientY-startY)}px)`;},{passive:true});
+document.addEventListener('touchend',()=>{if(!isDragging)return;isDragging=false;sheet.style.transition='';const t=parseFloat(sheet.style.transform.replace(/[^0-9.-]/g,''))||0;const r=t/sheet.offsetHeight;sheetState=r<0.25?'full':r<0.6?'half':'peek';sheet.className=sheetState;});
+map.on('click',e=>{if(e.originalEvent&&e.originalEvent.target.closest&&e.originalEvent.target.closest('.leaflet-popup'))return;if(sheetState!=='peek'){sheetState='peek';sheet.className='peek';}document.getElementById('legend-panel').classList.remove('show');});
 
-btnAoc.addEventListener('click', () => {
-  if (map.hasLayer(aocLayer)) { map.removeLayer(aocLayer); btnAoc.classList.remove('on'); }
-  else { map.addLayer(aocLayer); btnAoc.classList.add('on'); }
-});
-btnGc.addEventListener('click', () => {
-  if (map.hasLayer(gcLayer)) { map.removeLayer(gcLayer); btnGc.classList.remove('on'); }
-  else { map.addLayer(gcLayer); btnGc.classList.add('on'); setTimeout(updateGcLabels, 50); }
-});
-btnLegend.addEventListener('click', () => {
-  document.getElementById('legend-panel').classList.toggle('show');
-});
+// Layer toggles
+document.getElementById('btn-aoc').addEventListener('click',function(){if(map.hasLayer(aocLayer)){map.removeLayer(aocLayer);this.classList.remove('on');}else{map.addLayer(aocLayer);this.classList.add('on');}});
+document.getElementById('btn-gc').addEventListener('click',function(){if(map.hasLayer(gcLayer)){map.removeLayer(gcLayer);this.classList.remove('on');}else{map.addLayer(gcLayer);this.classList.add('on');setTimeout(updateGcLabels,50);}});
+document.getElementById('btn-legend').addEventListener('click',()=>document.getElementById('legend-panel').classList.toggle('show'));
 
-// =====================================================
-// BOTTOM SHEET
-// =====================================================
-const sheet = document.getElementById('sheet');
-const handle = document.getElementById('sheet-handle');
-let sheetState = 'peek', startY = 0, startTranslate = 0, isDragging = false;
+// Detail view
+const listView=document.getElementById('list-view');
+const detailView=document.getElementById('detail-view');
+let currentView='list';
 
-function getSheetTranslate() {
-  const h = sheet.offsetHeight;
-  if (sheetState === 'peek') return h - 140;
-  if (sheetState === 'half') return h * 0.5;
-  return 0;
+function showDetail(idx){
+  const e=estates[idx];
+  const vines=vineyardData[e.name]||[];
+  const gcCount=vines.filter(v=>v.startsWith('GC:')).length;
+  const pCount=vines.filter(v=>v.startsWith('1er:')).length;
+  const vCount=vines.filter(v=>v.startsWith('V:')).length;
+  const color=gradeColors[e.grade];
+  const emoji=e.grade===3?"&#127815;&#127815;&#127815;":e.grade===2?"&#127815;&#127815;":e.grade===1?"&#127815;":"&#9733;";
+
+  let html=`<div class="detail-back" onclick="showList()">&#8592; Back to list</div>`;
+  html+=`<div class="detail-header">`;
+  html+=`<div class="d-name">${e.name}</div>`;
+  html+=`<div class="d-aoc">${e.village} AOC &middot; ${e.region}</div>`;
+  html+=`<div class="d-badge"><span class="grape-badge grape-${e.grade}">${emoji} ${gradeLabels[e.grade]}</span></div>`;
+  html+=`</div>`;
+
+  if(vines.length>0){
+    html+=`<div class="detail-section"><h3>Vineyards${gcCount?` &middot; GC ${gcCount}`:''} ${pCount?` &middot; 1er ${pCount}`:''}</h3>`;
+    vines.forEach(v=>{
+      let type,cls,name;
+      if(v.startsWith('GC:')){type='GC';cls='vy-gc';name=v.slice(3);}
+      else if(v.startsWith('1er:')){type='1er';cls='vy-1er';name=v.slice(4);}
+      else{type='V';cls='vy-v';name=v.slice(2);}
+      html+=`<div class="vineyard-item"><span class="vy-type ${cls}">${type}</span><span class="vy-name">${name}</span></div>`;
+    });
+    html+=`</div>`;
+  }
+
+  detailView.innerHTML=html;
+  listView.style.display='none';
+  detailView.classList.add('show');
+  currentView='detail';
+
+  // Expand sheet
+  sheetState='half';
+  sheet.className='half';
+
+  // Pan map
+  const m=markers[idx];
+  if(m)setTimeout(()=>{map.setView(m.getLatLng(),14,{animate:true});},200);
+
+  // Highlight GC markers on map that this estate owns
+  gcLayer.eachLayer(l=>{
+    if(l._gcName){
+      const owned=vines.some(v=>v.includes(l._gcName));
+      l.setStyle({fillOpacity:owned?1:0.2,opacity:owned?1:0.3,radius:owned?7:4});
+    }
+  });
 }
-handle.addEventListener('touchstart', e => {
-  isDragging = true; startY = e.touches[0].clientY; startTranslate = getSheetTranslate();
-  sheet.style.transition = 'none';
-}, { passive: true });
-document.addEventListener('touchmove', e => {
-  if (!isDragging) return;
-  sheet.style.transform = `translateY(${Math.max(0, startTranslate + e.touches[0].clientY - startY)}px)`;
-}, { passive: true });
-document.addEventListener('touchend', () => {
-  if (!isDragging) return; isDragging = false; sheet.style.transition = '';
-  const t = parseFloat(sheet.style.transform.replace(/[^0-9.-]/g,''))||0;
-  const ratio = t / sheet.offsetHeight;
-  sheetState = ratio < 0.25 ? 'full' : ratio < 0.6 ? 'half' : 'peek';
-  sheet.className = sheetState;
-});
 
-map.on('click', () => {
-  if (sheetState !== 'peek') { sheetState = 'peek'; sheet.className = 'peek'; }
-  document.getElementById('legend-panel').classList.remove('show');
-});
+function showList(){
+  detailView.classList.remove('show');
+  listView.style.display='';
+  currentView='list';
+  // Reset GC highlights
+  gcLayer.eachLayer(l=>{if(l._gcName)l.setStyle({fillOpacity:0.5,opacity:0.9,radius:4});});
+}
 
-// =====================================================
-// RENDER LIST
-// =====================================================
-function renderList(filter) {
-  const list = document.getElementById('estate-list');
-  const filtered = filter === 'all' ? estates : estates.filter(e => String(e.grade) === filter);
-  const stats = document.getElementById('sheet-stats');
-  const rc = {};
-  filtered.forEach(e => { rc[e.region] = (rc[e.region]||0)+1; });
-  stats.textContent = `${filtered.length} estates — ` + Object.entries(rc).map(([r,c])=>`${r}: ${c}`).join(', ');
+// Render list
+function renderList(filter){
+  const filtered=filter==='all'?estates:estates.filter(e=>String(e.grade)===filter);
+  const stats=document.getElementById('sheet-stats');
+  const rc={};filtered.forEach(e=>{rc[e.region]=(rc[e.region]||0)+1;});
+  stats.textContent=`${filtered.length} estates — `+Object.entries(rc).map(([r,c])=>`${r}: ${c}`).join(', ');
 
-  list.innerHTML = filtered.map(e => `
-    <div class="estate-item" data-index="${estates.indexOf(e)}">
+  listView.innerHTML=filtered.map(e=>{
+    const vines=vineyardData[e.name]||[];
+    const gc=vines.filter(v=>v.startsWith('GC:')).length;
+    const p=vines.filter(v=>v.startsWith('1er:')).length;
+    const summary=[];if(gc)summary.push(`GC ${gc}`);if(p)summary.push(`1er ${p}`);
+    return `<div class="estate-item" data-index="${estates.indexOf(e)}">
       <div class="estate-grade-dot" style="background:${gradeColors[e.grade]}"></div>
       <div class="estate-info">
         <div class="estate-name">${e.name}</div>
-        <div class="estate-meta">${e.village} AOC &middot; ${e.region}</div>
+        <div class="estate-meta">${e.village} AOC${summary.length?' &middot; '+summary.join(' &middot; '):''}</div>
       </div>
       <span class="grape-badge grape-${e.grade}">${gradeLabels[e.grade]}</span>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 
-  list.querySelectorAll('.estate-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const idx = parseInt(item.dataset.index);
-      const m = markers[idx];
-      if (!m) return;
-      sheetState = 'peek'; sheet.className = 'peek';
-      setTimeout(() => { map.setView(m.getLatLng(), 14, {animate:true}); m.openPopup(); }, 200);
-      list.querySelectorAll('.estate-item').forEach(el => el.classList.remove('highlight'));
-      item.classList.add('highlight');
-    });
+  listView.querySelectorAll('.estate-item').forEach(item=>{
+    item.addEventListener('click',()=>showDetail(parseInt(item.dataset.index)));
   });
 
-  markers.forEach(m => {
-    const show = filter === 'all' || String(m.estateData.grade) === filter;
-    m.setStyle({ opacity: show ? 0.95 : 0.08, fillOpacity: show ? 0.75 : 0.04 });
-    m.setRadius(show ? gradeSizes[m.estateData.grade] : 3);
+  markers.forEach(m=>{
+    const show=filter==='all'||String(m.estateData.grade)===filter;
+    m.setStyle({opacity:show?0.95:0.08,fillOpacity:show?0.75:0.04});
+    m.setRadius(show?gradeSizes[m.estateData.grade]:3);
   });
+
+  if(currentView==='detail')showList();
 }
 
-document.querySelectorAll('.filter-chip').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll(`.filter-chip[data-filter="${btn.dataset.filter}"]`).forEach(b => b.classList.add('active'));
+document.querySelectorAll('.filter-chip').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-chip').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll(`.filter-chip[data-filter="${btn.dataset.filter}"]`).forEach(b=>b.classList.add('active'));
     renderList(btn.dataset.filter);
   });
 });
