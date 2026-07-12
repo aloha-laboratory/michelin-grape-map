@@ -27,9 +27,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sa
 .filter-chip.active { background: #8b1a2b; color: #fff; font-weight: 600; box-shadow: 0 2px 8px rgba(139,26,43,0.3); }
 
 /* Sheet */
-#sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; background: #fff; border-radius: 18px 18px 0 0; box-shadow: 0 -4px 20px rgba(0,0,0,0.1); transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1); height: 80vh; display: flex; flex-direction: column; padding-bottom: env(safe-area-inset-bottom, 0); }
+#sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; background: #fff; border-radius: 18px 18px 0 0; box-shadow: 0 -4px 20px rgba(0,0,0,0.1); transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1); top: 10vh; display: flex; flex-direction: column; padding-bottom: env(safe-area-inset-bottom, 0); }
 #sheet.peek { transform: translateY(calc(100% - 140px)); }
-#sheet.half { transform: translateY(calc(100% - 50vh)); }
+#sheet.half { transform: translateY(50%); }
 #sheet.full { transform: translateY(0); }
 #sheet-handle { display: flex; justify-content: center; padding: 10px 0 6px; cursor: grab; }
 #sheet-handle .bar { width: 36px; height: 4px; border-radius: 2px; background: #d0d0d0; }
@@ -52,8 +52,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sa
 .grape-s { background: #ecfdf5; color: #059669; }
 
 /* Detail view */
-#detail-view { display: none; flex-direction: column; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-#detail-view.show { display: flex; }
+#detail-view { display: none; }
+#detail-view.show { display: block; }
 .detail-back { display: flex; align-items: center; gap: 6px; padding: 12px 20px; color: #8b1a2b; font-size: 14px; font-weight: 600; cursor: pointer; border-bottom: 1px solid #f2f2f2; }
 .detail-back:active { background: #f7f3f0; }
 .detail-header { padding: 16px 20px; border-bottom: 1px solid #f2f2f2; }
@@ -402,7 +402,7 @@ estates.forEach(estate=>{
 // Sheet drag
 const sheet=document.getElementById('sheet');const handle=document.getElementById('sheet-handle');
 let sheetState='peek',startY=0,startTranslate=0,isDragging=false;
-function getSheetTranslate(){const h=sheet.offsetHeight;if(sheetState==='peek')return h-140;if(sheetState==='half')return h*0.5;return 0;}
+function getSheetTranslate(){const h=sheet.offsetHeight;if(sheetState==='peek')return h-140;if(sheetState==='half')return Math.round(h/2);return 0;}
 handle.addEventListener('touchstart',e=>{isDragging=true;startY=e.touches[0].clientY;startTranslate=getSheetTranslate();sheet.style.transition='none';},{passive:true});
 document.addEventListener('touchmove',e=>{if(!isDragging)return;sheet.style.transform=`translateY(${Math.max(0,startTranslate+e.touches[0].clientY-startY)}px)`;},{passive:true});
 document.addEventListener('touchend',()=>{if(!isDragging)return;isDragging=false;sheet.style.transition='';const t=parseFloat(sheet.style.transform.replace(/[^0-9.-]/g,''))||0;const r=t/sheet.offsetHeight;sheetState=r<0.25?'full':r<0.6?'half':'peek';sheet.className=sheetState;});
@@ -451,9 +451,10 @@ function showDetail(idx){
   detailView.classList.add('show');
   currentView='detail';
 
-  // Expand sheet
-  sheetState='half';
-  sheet.className='half';
+  // Expand sheet to full for vineyard list
+  sheetState='full';
+  sheet.className='full';
+  document.getElementById('sheet-content').scrollTop=0;
 
   // Pan map
   const m=markers[idx];
