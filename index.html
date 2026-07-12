@@ -14,296 +14,141 @@
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; overflow: hidden; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  background: #fafafa;
-  color: #333;
-}
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: #fafafa; color: #333; }
 
-/* === MAP === */
-#map {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  z-index: 1;
-}
+#map { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1; }
 
-/* === TOP BAR (floating) === */
 #topbar {
-  position: fixed;
-  top: env(safe-area-inset-top, 0);
-  left: 0; right: 0;
-  z-index: 1000;
-  padding: 12px 16px 0;
-  pointer-events: none;
+  position: fixed; top: env(safe-area-inset-top, 0); left: 0; right: 0;
+  z-index: 1000; padding: 12px 16px 0; pointer-events: none;
 }
 #title-card {
-  background: rgba(255,255,255,0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 14px;
-  padding: 12px 16px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-  pointer-events: auto;
+  background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-radius: 14px; padding: 12px 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); pointer-events: auto;
 }
-#title-card h1 {
-  font-size: 17px;
-  font-weight: 700;
-  color: #8b1a2b;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-}
-#title-card p {
-  font-size: 11px;
-  color: #999;
-  margin-top: 2px;
-  letter-spacing: 0.5px;
-}
+#title-card h1 { font-size: 17px; font-weight: 700; color: #8b1a2b; letter-spacing: 1.5px; text-transform: uppercase; }
+#title-card p { font-size: 11px; color: #999; margin-top: 2px; letter-spacing: 0.5px; }
 
-/* === FILTER CHIPS (floating) === */
 #filter-bar {
-  position: fixed;
-  top: calc(env(safe-area-inset-top, 0px) + 72px);
-  left: 0; right: 0;
-  z-index: 1000;
-  padding: 0 16px;
-  pointer-events: none;
+  position: fixed; top: calc(env(safe-area-inset-top, 0px) + 72px); left: 0; right: 0;
+  z-index: 1000; padding: 0 16px; pointer-events: none;
 }
 #filter-scroll {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  pointer-events: auto;
-  padding: 4px 0;
+  display: flex; gap: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; pointer-events: auto; padding: 4px 0;
 }
 #filter-scroll::-webkit-scrollbar { display: none; }
 .filter-chip {
-  flex-shrink: 0;
-  padding: 7px 14px;
-  border: none;
-  border-radius: 20px;
-  background: rgba(255,255,255,0.88);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
-  color: #666;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
-  transition: all 0.2s;
-  white-space: nowrap;
+  flex-shrink: 0; padding: 7px 14px; border: none; border-radius: 20px;
+  background: rgba(255,255,255,0.88); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 1px 6px rgba(0,0,0,0.08); color: #666; cursor: pointer;
+  font-size: 13px; font-weight: 500; transition: all 0.2s; white-space: nowrap;
 }
-.filter-chip.active {
-  background: #8b1a2b;
-  color: #fff;
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(139,26,43,0.3);
-}
+.filter-chip.active { background: #8b1a2b; color: #fff; font-weight: 600; box-shadow: 0 2px 8px rgba(139,26,43,0.3); }
 
-/* === BOTTOM SHEET === */
 #sheet {
-  position: fixed;
-  left: 0; right: 0; bottom: 0;
-  z-index: 1000;
-  background: #fff;
-  border-radius: 18px 18px 0 0;
-  box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; background: #fff;
+  border-radius: 18px 18px 0 0; box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
   transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
-  max-height: 75vh;
-  display: flex;
-  flex-direction: column;
-  padding-bottom: env(safe-area-inset-bottom, 0);
+  max-height: 75vh; display: flex; flex-direction: column; padding-bottom: env(safe-area-inset-bottom, 0);
 }
 #sheet.peek { transform: translateY(calc(100% - 140px)); }
 #sheet.half { transform: translateY(calc(100% - 50vh)); }
 #sheet.full { transform: translateY(0); }
 
-#sheet-handle {
-  display: flex;
-  justify-content: center;
-  padding: 10px 0 6px;
-  cursor: grab;
-}
-#sheet-handle .bar {
-  width: 36px;
-  height: 4px;
-  border-radius: 2px;
-  background: #d0d0d0;
-}
+#sheet-handle { display: flex; justify-content: center; padding: 10px 0 6px; cursor: grab; }
+#sheet-handle .bar { width: 36px; height: 4px; border-radius: 2px; background: #d0d0d0; }
+#sheet-header { padding: 0 20px 12px; }
+#sheet-stats { font-size: 12px; color: #999; margin-bottom: 8px; }
 
-#sheet-header {
-  padding: 0 20px 12px;
-}
-#sheet-stats {
-  font-size: 12px;
-  color: #999;
-  margin-bottom: 8px;
-}
-
-#estate-list {
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  flex: 1;
-}
+#estate-list { overflow-y: auto; -webkit-overflow-scrolling: touch; flex: 1; }
 .estate-item {
-  display: flex;
-  align-items: center;
-  padding: 14px 20px;
-  border-bottom: 1px solid #f2f2f2;
-  cursor: pointer;
-  transition: background 0.15s;
-  gap: 12px;
+  display: flex; align-items: center; padding: 14px 20px; border-bottom: 1px solid #f2f2f2;
+  cursor: pointer; transition: background 0.15s; gap: 12px;
 }
 .estate-item:active { background: #f7f3f0; }
 .estate-item.highlight { background: #fdf6f0; }
-
-.estate-grade-dot {
-  flex-shrink: 0;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-
+.estate-grade-dot { flex-shrink: 0; width: 10px; height: 10px; border-radius: 50%; }
 .estate-info { flex: 1; min-width: 0; }
-.estate-name {
-  font-size: 15px;
-  font-weight: 600;
-  color: #2c2c2c;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.estate-meta {
-  font-size: 12px;
-  color: #999;
-  margin-top: 2px;
-}
-
-.grape-badge {
-  flex-shrink: 0;
-  padding: 3px 10px;
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: 600;
-}
+.estate-name { font-size: 15px; font-weight: 600; color: #2c2c2c; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.estate-meta { font-size: 12px; color: #999; margin-top: 2px; }
+.grape-badge { flex-shrink: 0; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
 .grape-3 { background: #fdf6e3; color: #b8860b; }
 .grape-2 { background: #f3eeff; color: #7c3aed; }
 .grape-1 { background: #eff6ff; color: #2563eb; }
 .grape-s { background: #ecfdf5; color: #059669; }
 
-/* === LEGEND TOGGLE === */
-#legend-btn {
-  position: fixed;
-  bottom: 152px;
-  right: 16px;
-  z-index: 999;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.92);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: none;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  cursor: pointer;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s;
+/* Layer & Legend buttons */
+.fab-group {
+  position: fixed; right: 16px; z-index: 999;
+  display: flex; flex-direction: column; gap: 10px;
 }
-#legend-btn:active { transform: scale(0.9); }
+.fab-group { bottom: 152px; }
+.fab-btn {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: rgba(255,255,255,0.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border: none; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer;
+  font-size: 16px; display: flex; align-items: center; justify-content: center;
+  transition: transform 0.2s; color: #555;
+}
+.fab-btn:active { transform: scale(0.9); }
+.fab-btn.on { background: #8b1a2b; color: #fff; }
 
 #legend-panel {
-  position: fixed;
-  bottom: 200px;
-  right: 16px;
-  z-index: 999;
-  background: rgba(255,255,255,0.95);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 14px;
-  padding: 14px 18px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-  font-size: 12px;
-  line-height: 24px;
-  color: #555;
-  display: none;
+  position: fixed; bottom: 260px; right: 16px; z-index: 999;
+  background: rgba(255,255,255,0.95); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-radius: 14px; padding: 14px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  font-size: 12px; line-height: 22px; color: #555; display: none; max-height: 60vh; overflow-y: auto;
 }
 #legend-panel.show { display: block; }
-#legend-panel h4 { color: #8b1a2b; margin-bottom: 4px; font-size: 13px; font-weight: 700; }
+#legend-panel h4 { color: #8b1a2b; margin-bottom: 4px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; }
 #legend-panel .dot {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  margin-right: 8px;
-  vertical-align: middle;
+  display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+  margin-right: 6px; vertical-align: middle;
 }
+#legend-panel .swatch {
+  display: inline-block; width: 16px; height: 10px; border-radius: 2px;
+  margin-right: 6px; vertical-align: middle; opacity: 0.6;
+}
+#legend-panel hr { border: none; border-top: 1px solid #eee; margin: 6px 0; }
 
-/* === LEAFLET OVERRIDES === */
 .leaflet-control-zoom { display: none; }
-.leaflet-control-attribution {
-  font-size: 9px !important;
-  background: rgba(255,255,255,0.7) !important;
-  padding: 2px 6px !important;
+.leaflet-control-attribution { font-size: 9px !important; background: rgba(255,255,255,0.7) !important; padding: 2px 6px !important; }
+
+/* GC label style */
+.gc-label {
+  font-size: 9px; font-weight: 700; color: #8b1a2b; letter-spacing: 0.5px;
+  white-space: nowrap; text-shadow: 0 0 3px #fff, 0 0 6px #fff, 0 0 9px #fff;
+  pointer-events: none;
 }
 
-/* === DESKTOP (sidebar mode) === */
 @media (min-width: 769px) {
   #topbar { left: 400px; }
   #filter-bar { left: 400px; }
-  #sheet {
-    left: 0;
-    width: 400px;
-    top: 0;
-    bottom: 0;
-    border-radius: 0;
-    max-height: 100vh;
-    transform: none !important;
-    box-shadow: 2px 0 12px rgba(0,0,0,0.06);
-  }
+  #sheet { left:0; width:400px; top:0; bottom:0; border-radius:0; max-height:100vh; transform:none!important; box-shadow:2px 0 12px rgba(0,0,0,0.06); }
   #sheet-handle { display: none; }
   #sheet-header { padding-top: 16px; }
-  #sheet-header h2 {
-    display: block !important;
-    font-size: 22px;
-    font-weight: 300;
-    color: #8b1a2b;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-  }
-  #sheet-header .desktop-sub {
-    display: block !important;
-  }
-  #sheet .desktop-filters {
-    display: flex !important;
-    padding: 0 20px 12px;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
+  #sheet-header h2 { display:block!important; font-size:22px; font-weight:300; color:#8b1a2b; letter-spacing:2px; text-transform:uppercase; margin-bottom:4px; }
+  #sheet-header .desktop-sub { display:block!important; }
+  #sheet .desktop-filters { display:flex!important; padding:0 20px 12px; gap:8px; flex-wrap:wrap; }
   #filter-bar { display: none; }
   #topbar { display: none; }
   #map { left: 400px; }
-  #legend-btn { bottom: 24px; }
-  #legend-panel { bottom: 72px; }
+  .fab-group { bottom: 24px; }
+  #legend-panel { bottom: 140px; }
   .leaflet-control-zoom { display: block; }
 }
 </style>
 </head>
 <body>
 
-<!-- Floating top bar (mobile) -->
 <div id="topbar">
   <div id="title-card">
     <h1>Michelin Grape</h1>
-    <p>Burgundy 2026 &middot; 94 Estates</p>
+    <p>Burgundy Appellations + 2026 Grape Selection</p>
   </div>
 </div>
 
-<!-- Filter chips (mobile) -->
 <div id="filter-bar">
   <div id="filter-scroll">
     <button class="filter-chip active" data-filter="all">All 94</button>
@@ -314,30 +159,38 @@ body {
   </div>
 </div>
 
-<!-- Map -->
 <div id="map"></div>
 
-<!-- Legend -->
-<button id="legend-btn" onclick="document.getElementById('legend-panel').classList.toggle('show')">i</button>
+<div class="fab-group">
+  <button class="fab-btn on" id="btn-aoc" title="Appellations">A</button>
+  <button class="fab-btn on" id="btn-gc" title="Grand Cru">G</button>
+  <button class="fab-btn" id="btn-legend" title="Legend">i</button>
+</div>
+
 <div id="legend-panel">
-  <h4>Grape Rating</h4>
+  <h4>MICHELIN GRAPE</h4>
   <div><span class="dot" style="background:#b8860b"></span>3 Grapes (9)</div>
   <div><span class="dot" style="background:#7c3aed"></span>2 Grapes (20)</div>
   <div><span class="dot" style="background:#2563eb"></span>1 Grape (33)</div>
   <div><span class="dot" style="background:#059669"></span>Selected (32)</div>
-  <hr style="border-color:#eee;margin:6px 0">
-  <h4>Region</h4>
-  <div><span class="dot" style="background:#c0392b"></span>Cote de Nuits</div>
-  <div><span class="dot" style="background:#d4880f"></span>Cote de Beaune</div>
-  <div><span class="dot" style="background:#27ae60"></span>Cote Chalonnaise</div>
+  <hr>
+  <h4>APPELLATION (Village AOC)</h4>
+  <div><span class="swatch" style="background:#c0392b"></span>Cote de Nuits</div>
+  <div><span class="swatch" style="background:#d4880f"></span>Cote de Beaune</div>
+  <div><span class="swatch" style="background:#27ae60"></span>Cote Chalonnaise</div>
+  <hr>
+  <h4>GRAND CRU</h4>
+  <div><span class="dot" style="background:#8b1a2b;width:8px;height:8px;border:1px solid #8b1a2b"></span>Grand Cru vineyard</div>
+  <hr>
+  <h4>LAYER TOGGLE</h4>
+  <div style="color:#888;font-size:11px">A = Appellations on/off<br>G = Grand Cru on/off</div>
 </div>
 
-<!-- Bottom Sheet -->
 <div id="sheet" class="peek">
   <div id="sheet-handle"><div class="bar"></div></div>
   <div id="sheet-header">
     <h2 style="display:none">Michelin Grape Selection</h2>
-    <p class="desktop-sub" style="display:none;font-size:12px;color:#999;margin-bottom:12px">Burgundy, France &mdash; Inaugural Edition 2026</p>
+    <p class="desktop-sub" style="display:none;font-size:12px;color:#999;margin-bottom:12px">Burgundy Appellations + 2026 Grape Selection</p>
     <div id="sheet-stats"></div>
   </div>
   <div class="desktop-filters" style="display:none">
@@ -351,36 +204,83 @@ body {
 </div>
 
 <script>
-// Village coordinates
-const villages = {
-  "Marsannay-la-Cote": [47.2700, 4.9780],
-  "Marsannay": [47.2700, 4.9780],
-  "Fixin": [47.2480, 4.9680],
-  "Gevrey-Chambertin": [47.2270, 4.9690],
-  "Morey-Saint-Denis": [47.2050, 4.9620],
-  "Chambolle-Musigny": [47.1920, 4.9540],
-  "Vougeot": [47.1780, 4.9530],
-  "Vosne-Romanee": [47.1660, 4.9530],
-  "Nuits-Saint-Georges": [47.1380, 4.9500],
-  "Comblanchien": [47.1190, 4.9410],
-  "Pernand-Vergelesses": [47.0800, 4.8580],
-  "Savigny-les-Beaune": [47.0650, 4.8310],
-  "Beaune": [47.0260, 4.8380],
-  "Pommard": [47.0090, 4.8050],
-  "Volnay": [47.0020, 4.7920],
-  "Meursault": [46.9780, 4.7690],
-  "Auxey-Duresses": [46.9850, 4.7450],
-  "Saint-Romain": [46.9780, 4.7150],
-  "Puligny-Montrachet": [46.9490, 4.7550],
-  "Chassagne-Montrachet": [46.9360, 4.7420],
-  "Saint-Aubin": [46.9500, 4.7200],
-  "Santenay": [46.9100, 4.7170],
-  "Dezize-les-Maranges": [46.8920, 4.6900],
-  "Rully": [46.8720, 4.7370],
-  "Mercurey": [46.8400, 4.7180],
-  "Montagny": [46.7800, 4.7200],
-};
+// =====================================================
+// APPELLATION DATA (Village AOC strips along the cote)
+// =====================================================
+const appellations = [
+  // Cote de Nuits (north to south) — vineyard strips
+  { name: "Marsannay", region: "nuits", coords: [[47.280,4.960],[47.280,4.990],[47.262,4.988],[47.262,4.958]] },
+  { name: "Fixin", region: "nuits", coords: [[47.262,4.958],[47.262,4.985],[47.247,4.982],[47.247,4.955]] },
+  { name: "Gevrey-Chambertin", region: "nuits", coords: [[47.247,4.955],[47.247,4.982],[47.215,4.978],[47.215,4.950]] },
+  { name: "Morey-Saint-Denis", region: "nuits", coords: [[47.215,4.950],[47.215,4.978],[47.200,4.975],[47.200,4.948]] },
+  { name: "Chambolle-Musigny", region: "nuits", coords: [[47.200,4.948],[47.200,4.975],[47.185,4.972],[47.185,4.945]] },
+  { name: "Vougeot", region: "nuits", coords: [[47.185,4.945],[47.185,4.972],[47.174,4.970],[47.174,4.943]] },
+  { name: "Vosne-Romanee", region: "nuits", coords: [[47.174,4.943],[47.174,4.970],[47.155,4.968],[47.155,4.940]] },
+  { name: "Nuits-Saint-Georges", region: "nuits", coords: [[47.155,4.940],[47.155,4.968],[47.125,4.963],[47.125,4.935]] },
+  // Cote de Beaune
+  { name: "Pernand-Vergelesses", region: "beaune", coords: [[47.090,4.840],[47.090,4.870],[47.075,4.868],[47.075,4.838]] },
+  { name: "Savigny-les-Beaune", region: "beaune", coords: [[47.075,4.815],[47.075,4.850],[47.058,4.848],[47.058,4.813]] },
+  { name: "Beaune", region: "beaune", coords: [[47.040,4.820],[47.040,4.855],[47.018,4.845],[47.018,4.810]] },
+  { name: "Pommard", region: "beaune", coords: [[47.018,4.790],[47.018,4.820],[47.002,4.815],[47.002,4.785]] },
+  { name: "Volnay", region: "beaune", coords: [[47.008,4.778],[47.008,4.808],[46.995,4.803],[46.995,4.773]] },
+  { name: "Meursault", region: "beaune", coords: [[46.995,4.755],[46.995,4.790],[46.968,4.785],[46.968,4.750]] },
+  { name: "Auxey-Duresses", region: "beaune", coords: [[46.993,4.730],[46.993,4.758],[46.980,4.755],[46.980,4.728]] },
+  { name: "Saint-Romain", region: "beaune", coords: [[46.988,4.700],[46.988,4.730],[46.972,4.728],[46.972,4.698]] },
+  { name: "Puligny-Montrachet", region: "beaune", coords: [[46.960,4.742],[46.960,4.770],[46.943,4.768],[46.943,4.740]] },
+  { name: "Chassagne-Montrachet", region: "beaune", coords: [[46.943,4.728],[46.943,4.758],[46.925,4.755],[46.925,4.725]] },
+  { name: "Saint-Aubin", region: "beaune", coords: [[46.958,4.705],[46.958,4.735],[46.942,4.733],[46.942,4.703]] },
+  { name: "Santenay", region: "beaune", coords: [[46.925,4.700],[46.925,4.735],[46.905,4.730],[46.905,4.695]] },
+  { name: "Maranges", region: "beaune", coords: [[46.905,4.675],[46.905,4.708],[46.885,4.705],[46.885,4.672]] },
+  // Cote Chalonnaise
+  { name: "Rully", region: "chalon", coords: [[46.882,4.720],[46.882,4.755],[46.862,4.752],[46.862,4.718]] },
+  { name: "Mercurey", region: "chalon", coords: [[46.852,4.700],[46.852,4.735],[46.828,4.732],[46.828,4.698]] },
+  { name: "Montagny", region: "chalon", coords: [[46.795,4.700],[46.795,4.735],[46.770,4.732],[46.770,4.698]] },
+];
 
+const regionColors = { nuits: "#c0392b", beaune: "#d4880f", chalon: "#27ae60" };
+
+// =====================================================
+// GRAND CRU VINEYARDS
+// =====================================================
+const grandCrus = [
+  // Cote de Nuits
+  { name: "Chambertin", lat: 47.2220, lng: 4.9720, aoc: "Gevrey-Chambertin" },
+  { name: "Chambertin-Clos de Beze", lat: 47.2250, lng: 4.9715, aoc: "Gevrey-Chambertin" },
+  { name: "Chapelle-Chambertin", lat: 47.2235, lng: 4.9730, aoc: "Gevrey-Chambertin" },
+  { name: "Charmes-Chambertin", lat: 47.2200, lng: 4.9735, aoc: "Gevrey-Chambertin" },
+  { name: "Griotte-Chambertin", lat: 47.2215, lng: 4.9725, aoc: "Gevrey-Chambertin" },
+  { name: "Latricieres-Chambertin", lat: 47.2190, lng: 4.9730, aoc: "Gevrey-Chambertin" },
+  { name: "Mazis-Chambertin", lat: 47.2260, lng: 4.9710, aoc: "Gevrey-Chambertin" },
+  { name: "Mazoyeres-Chambertin", lat: 47.2195, lng: 4.9740, aoc: "Gevrey-Chambertin" },
+  { name: "Ruchottes-Chambertin", lat: 47.2265, lng: 4.9705, aoc: "Gevrey-Chambertin" },
+  { name: "Clos de la Roche", lat: 47.2085, lng: 4.9640, aoc: "Morey-Saint-Denis" },
+  { name: "Clos Saint-Denis", lat: 47.2065, lng: 4.9635, aoc: "Morey-Saint-Denis" },
+  { name: "Clos de Tart", lat: 47.2055, lng: 4.9630, aoc: "Morey-Saint-Denis" },
+  { name: "Clos des Lambrays", lat: 47.2075, lng: 4.9638, aoc: "Morey-Saint-Denis" },
+  { name: "Bonnes-Mares", lat: 47.1975, lng: 4.9580, aoc: "Chambolle-Musigny" },
+  { name: "Musigny", lat: 47.1905, lng: 4.9570, aoc: "Chambolle-Musigny" },
+  { name: "Clos de Vougeot", lat: 47.1770, lng: 4.9565, aoc: "Vougeot" },
+  { name: "Grands Echezeaux", lat: 47.1740, lng: 4.9555, aoc: "Vosne-Romanee" },
+  { name: "Echezeaux", lat: 47.1720, lng: 4.9545, aoc: "Vosne-Romanee" },
+  { name: "Richebourg", lat: 47.1680, lng: 4.9560, aoc: "Vosne-Romanee" },
+  { name: "Romanee-Saint-Vivant", lat: 47.1665, lng: 4.9550, aoc: "Vosne-Romanee" },
+  { name: "Romanee-Conti", lat: 47.1645, lng: 4.9535, aoc: "Vosne-Romanee" },
+  { name: "La Romanee", lat: 47.1655, lng: 4.9540, aoc: "Vosne-Romanee" },
+  { name: "La Tache", lat: 47.1620, lng: 4.9525, aoc: "Vosne-Romanee" },
+  { name: "La Grande Rue", lat: 47.1640, lng: 4.9530, aoc: "Vosne-Romanee" },
+  // Cote de Beaune
+  { name: "Corton", lat: 47.0770, lng: 4.8620, aoc: "Pernand-Vergelesses" },
+  { name: "Corton-Charlemagne", lat: 47.0755, lng: 4.8560, aoc: "Pernand-Vergelesses" },
+  { name: "Chevalier-Montrachet", lat: 46.9530, lng: 4.7560, aoc: "Puligny-Montrachet" },
+  { name: "Montrachet", lat: 46.9510, lng: 4.7550, aoc: "Puligny-Montrachet" },
+  { name: "Batard-Montrachet", lat: 46.9495, lng: 4.7545, aoc: "Puligny-Montrachet" },
+  { name: "Bienvenues-Batard-Montrachet", lat: 46.9505, lng: 4.7555, aoc: "Puligny-Montrachet" },
+  { name: "Criots-Batard-Montrachet", lat: 46.9480, lng: 4.7535, aoc: "Chassagne-Montrachet" },
+];
+
+// =====================================================
+// MICHELIN ESTATES (unchanged data)
+// =====================================================
 const estates = [
   { name: "Cecile Tremblay", village: "Morey-Saint-Denis", region: "Cote de Nuits", grade: 3 },
   { name: "Dugat-Py", village: "Gevrey-Chambertin", region: "Cote de Nuits", grade: 3 },
@@ -394,7 +294,7 @@ const estates = [
   { name: "Dujac", village: "Morey-Saint-Denis", region: "Cote de Nuits", grade: 2 },
   { name: "Denis Mortet", village: "Gevrey-Chambertin", region: "Cote de Nuits", grade: 2 },
   { name: "Georges Mugneret-Gibourg", village: "Vosne-Romanee", region: "Cote de Nuits", grade: 2 },
-  { name: "Bruno Clair", village: "Marsannay-la-Cote", region: "Cote de Nuits", grade: 2 },
+  { name: "Bruno Clair", village: "Marsannay", region: "Cote de Nuits", grade: 2 },
   { name: "Gerard Mugneret", village: "Vosne-Romanee", region: "Cote de Nuits", grade: 2 },
   { name: "Jacques-Frederic Mugnier", village: "Chambolle-Musigny", region: "Cote de Nuits", grade: 2 },
   { name: "Jean-Claude Bachelet", village: "Saint-Aubin", region: "Cote de Beaune", grade: 2 },
@@ -445,10 +345,10 @@ const estates = [
   { name: "Marc Colin", village: "Saint-Aubin", region: "Cote de Beaune", grade: 1 },
   { name: "Henri & Gilles Buisson", village: "Saint-Romain", region: "Cote de Beaune", grade: 1 },
   { name: "Sylvain Pataille", village: "Marsannay", region: "Cote de Nuits", grade: "s" },
-  { name: "Camille Thiriet", village: "Comblanchien", region: "Cote de Nuits", grade: "s" },
+  { name: "Camille Thiriet", village: "Nuits-Saint-Georges", region: "Cote de Nuits", grade: "s" },
   { name: "Berthaut-Gerbet", village: "Fixin", region: "Cote de Nuits", grade: "s" },
   { name: "Benoit Chevallier", village: "Vosne-Romanee", region: "Cote de Nuits", grade: "s" },
-  { name: "Charles Audoin", village: "Marsannay-la-Cote", region: "Cote de Nuits", grade: "s" },
+  { name: "Charles Audoin", village: "Marsannay", region: "Cote de Nuits", grade: "s" },
   { name: "Fourrier", village: "Gevrey-Chambertin", region: "Cote de Nuits", grade: "s" },
   { name: "Domaine Felettig", village: "Chambolle-Musigny", region: "Cote de Nuits", grade: "s" },
   { name: "Hubert Lignier", village: "Morey-Saint-Denis", region: "Cote de Nuits", grade: "s" },
@@ -467,8 +367,8 @@ const estates = [
   { name: "Thomas-Collardot", village: "Puligny-Montrachet", region: "Cote de Beaune", grade: "s" },
   { name: "Albert Bichot", village: "Beaune", region: "Cote de Beaune", grade: "s" },
   { name: "Bouchard Pere & Fils", village: "Beaune", region: "Cote de Beaune", grade: "s" },
-  { name: "Bachelet-Monnot", village: "Dezize-les-Maranges", region: "Cote de Beaune", grade: "s" },
-  { name: "Nicolas Perrault", village: "Dezize-les-Maranges", region: "Cote de Beaune", grade: "s" },
+  { name: "Bachelet-Monnot", village: "Maranges", region: "Cote de Beaune", grade: "s" },
+  { name: "Nicolas Perrault", village: "Maranges", region: "Cote de Beaune", grade: "s" },
   { name: "Alain Gras", village: "Saint-Romain", region: "Cote de Beaune", grade: "s" },
   { name: "Joseph Colin", village: "Saint-Aubin", region: "Cote de Beaune", grade: "s" },
   { name: "Lafouge", village: "Auxey-Duresses", region: "Cote de Beaune", grade: "s" },
@@ -482,89 +382,99 @@ const gradeColors = { 3: "#b8860b", 2: "#7c3aed", 1: "#2563eb", "s": "#059669" }
 const gradeLabels = { 3: "3 Grapes", 2: "2 Grapes", 1: "1 Grape", "s": "Selected" };
 const gradeSizes = { 3: 12, 2: 9, 1: 7, "s": 6 };
 
-// Map
-const map = L.map('map', {
-  zoomControl: false,
-  attributionControl: true
-}).setView([47.05, 4.88], 12);
-
+// =====================================================
+// MAP INIT
+// =====================================================
+const map = L.map('map', { zoomControl: false, attributionControl: true }).setView([47.05, 4.88], 12);
 L.control.zoom({ position: 'topright' }).addTo(map);
-
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-  attribution: '&copy; OSM &copy; CARTO',
-  maxZoom: 18
+  attribution: '&copy; OSM &copy; CARTO', maxZoom: 18
 }).addTo(map);
 
-// Region zones
-const regionZones = {
-  "Cote de Nuits": {
-    color: "#c0392b",
-    coords: [
-      [47.305,4.935],[47.305,5.010],[47.260,5.005],[47.220,4.998],
-      [47.190,4.985],[47.165,4.980],[47.130,4.975],[47.105,4.965],
-      [47.105,4.910],[47.130,4.915],[47.165,4.920],[47.190,4.925],
-      [47.220,4.935],[47.260,4.940],[47.305,4.935]
-    ]
-  },
-  "Cote de Beaune": {
-    color: "#d4880f",
-    coords: [
-      [47.105,4.965],[47.105,4.910],[47.080,4.820],[47.060,4.800],
-      [47.035,4.795],[47.010,4.770],[46.985,4.730],[46.955,4.715],
-      [46.930,4.700],[46.900,4.660],[46.880,4.660],[46.880,4.730],
-      [46.900,4.760],[46.930,4.775],[46.955,4.790],[46.985,4.810],
-      [47.010,4.840],[47.035,4.870],[47.060,4.870],[47.080,4.890],
-      [47.105,4.965]
-    ]
-  },
-  "Cote Chalonnaise": {
-    color: "#27ae60",
-    coords: [
-      [46.880,4.660],[46.880,4.730],[46.870,4.760],[46.850,4.750],
-      [46.830,4.745],[46.800,4.740],[46.770,4.745],[46.750,4.740],
-      [46.750,4.680],[46.770,4.680],[46.800,4.680],[46.830,4.680],
-      [46.850,4.670],[46.880,4.660]
-    ]
-  }
-};
+// =====================================================
+// LAYER 1: APPELLATION ZONES
+// =====================================================
+const aocLayer = L.layerGroup();
 
-Object.entries(regionZones).forEach(([name, zone]) => {
-  const polygon = L.polygon(zone.coords, {
-    color: zone.color, weight: 2, opacity: 0.5,
-    fillColor: zone.color, fillOpacity: 0.05, dashArray: '6,4'
-  }).addTo(map);
-  const center = polygon.getBounds().getCenter();
-  L.marker(center, {
+appellations.forEach(aoc => {
+  const color = regionColors[aoc.region];
+  const poly = L.polygon(aoc.coords, {
+    color: color, weight: 1.5, opacity: 0.7,
+    fillColor: color, fillOpacity: 0.12
+  });
+  poly.bindPopup(`<div style="font-family:system-ui"><b>${aoc.name} AOC</b><br><span style="color:#888;font-size:12px">Village Appellation</span></div>`, { closeButton: false });
+
+  // AOC label
+  const center = poly.getBounds().getCenter();
+  const label = L.marker(center, {
     interactive: false,
     icon: L.divIcon({
       className: '',
-      html: `<div style="color:${zone.color};font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;white-space:nowrap;text-shadow:0 0 4px rgba(255,255,255,0.95),0 0 8px rgba(255,255,255,0.8);pointer-events:none">${name}</div>`,
-      iconSize: [0,0], iconAnchor: [0,0]
+      html: `<div style="color:${color};font-size:10px;font-weight:700;white-space:nowrap;text-shadow:0 0 4px #fff,0 0 8px #fff;pointer-events:none;opacity:0.8">${aoc.name}</div>`,
+      iconSize: [0,0], iconAnchor: [0, 6]
     })
-  }).addTo(map);
-});
+  });
 
-// Village labels
-const villageLabels = L.layerGroup();
-Object.entries(villages).forEach(([name, coords]) => {
-  if (name === "Marsannay") return;
-  villageLabels.addLayer(L.marker(coords, {
+  aocLayer.addLayer(poly);
+  aocLayer.addLayer(label);
+});
+aocLayer.addTo(map);
+
+// =====================================================
+// LAYER 2: GRAND CRU
+// =====================================================
+const gcLayer = L.layerGroup();
+
+grandCrus.forEach(gc => {
+  // Diamond marker
+  const marker = L.circleMarker([gc.lat, gc.lng], {
+    radius: 4, fillColor: "#8b1a2b", color: "#8b1a2b",
+    weight: 1.5, opacity: 0.9, fillOpacity: 0.5
+  });
+  marker.bindPopup(`<div style="font-family:system-ui"><b>${gc.name}</b><br><span style="color:#8b1a2b;font-size:12px;font-weight:600">Grand Cru</span><br><span style="color:#888;font-size:11px">${gc.aoc}</span></div>`, { closeButton: false });
+  gcLayer.addLayer(marker);
+
+  // Label (show at zoom >= 14)
+  const label = L.marker([gc.lat, gc.lng], {
     interactive: false,
     icon: L.divIcon({
-      className: '',
-      html: `<div style="color:#666;font-size:10px;font-weight:600;white-space:nowrap;text-shadow:0 0 3px rgba(255,255,255,0.95),0 0 6px rgba(255,255,255,0.8);pointer-events:none">${name}</div>`,
-      iconSize: [0,0], iconAnchor: [-8,12]
+      className: 'gc-label',
+      html: gc.name,
+      iconSize: [0,0], iconAnchor: [-6, 4]
     })
-  }));
+  });
+  label._isGcLabel = true;
+  gcLayer.addLayer(label);
 });
-villageLabels.addTo(map);
-map.on('zoomend', () => {
-  if (map.getZoom() >= 12) { if (!map.hasLayer(villageLabels)) villageLabels.addTo(map); }
-  else { if (map.hasLayer(villageLabels)) map.removeLayer(villageLabels); }
-});
+gcLayer.addTo(map);
 
-// Markers
+// Show/hide GC labels based on zoom
+function updateGcLabels() {
+  const zoom = map.getZoom();
+  gcLayer.eachLayer(l => {
+    if (l._isGcLabel) {
+      const el = l.getElement();
+      if (el) el.style.display = zoom >= 14 ? '' : 'none';
+    }
+  });
+}
+map.on('zoomend', updateGcLabels);
+setTimeout(updateGcLabels, 100);
+
+// =====================================================
+// LAYER 3: MICHELIN ESTATES
+// =====================================================
 const markers = [];
+
+// Get center of AOC polygon for estate placement
+function getAocCenter(villageName) {
+  const aoc = appellations.find(a => a.name === villageName);
+  if (!aoc) return null;
+  const poly = L.polygon(aoc.coords);
+  const c = poly.getBounds().getCenter();
+  return [c.lat, c.lng];
+}
+
 function getOffset(estate) {
   const same = estates.filter(e => e.village === estate.village);
   const idx = same.indexOf(estate);
@@ -575,27 +485,47 @@ function getOffset(estate) {
 }
 
 estates.forEach(estate => {
-  const coords = villages[estate.village];
+  const coords = getAocCenter(estate.village);
   if (!coords) return;
   const off = getOffset(estate);
   const color = gradeColors[estate.grade];
   const marker = L.circleMarker([coords[0]+off[0], coords[1]+off[1]], {
     radius: gradeSizes[estate.grade],
     fillColor: color, color: color,
-    weight: estate.grade === 3 ? 2 : 1,
-    opacity: 0.9, fillOpacity: 0.7
+    weight: estate.grade === 3 ? 2.5 : 1.5,
+    opacity: 0.95, fillOpacity: 0.75
   }).addTo(map);
   const emoji = estate.grade === 3 ? "&#127815;&#127815;&#127815;" : estate.grade === 2 ? "&#127815;&#127815;" : estate.grade === 1 ? "&#127815;" : "&#9733;";
-  marker.bindPopup(`<div style="font-family:system-ui;min-width:160px"><div style="font-size:15px;font-weight:700;color:#222">${estate.name}</div><div style="font-size:12px;color:#888;margin:3px 0">${estate.village} &middot; ${estate.region}</div><div style="font-size:13px;color:${color};font-weight:600">${emoji} ${gradeLabels[estate.grade]}</div></div>`, { closeButton: false });
+  marker.bindPopup(`<div style="font-family:system-ui;min-width:160px"><div style="font-size:15px;font-weight:700;color:#222">${estate.name}</div><div style="font-size:12px;color:#888;margin:3px 0">${estate.village} AOC &middot; ${estate.region}</div><div style="font-size:13px;color:${color};font-weight:600">${emoji} ${gradeLabels[estate.grade]}</div></div>`, { closeButton: false });
   marker.estateData = estate;
   markers.push(marker);
 });
 
-// Bottom sheet drag
+// =====================================================
+// LAYER TOGGLES
+// =====================================================
+const btnAoc = document.getElementById('btn-aoc');
+const btnGc = document.getElementById('btn-gc');
+const btnLegend = document.getElementById('btn-legend');
+
+btnAoc.addEventListener('click', () => {
+  if (map.hasLayer(aocLayer)) { map.removeLayer(aocLayer); btnAoc.classList.remove('on'); }
+  else { map.addLayer(aocLayer); btnAoc.classList.add('on'); }
+});
+btnGc.addEventListener('click', () => {
+  if (map.hasLayer(gcLayer)) { map.removeLayer(gcLayer); btnGc.classList.remove('on'); }
+  else { map.addLayer(gcLayer); btnGc.classList.add('on'); setTimeout(updateGcLabels, 50); }
+});
+btnLegend.addEventListener('click', () => {
+  document.getElementById('legend-panel').classList.toggle('show');
+});
+
+// =====================================================
+// BOTTOM SHEET
+// =====================================================
 const sheet = document.getElementById('sheet');
 const handle = document.getElementById('sheet-handle');
-let sheetState = 'peek'; // peek, half, full
-let startY = 0, startTranslate = 0, isDragging = false;
+let sheetState = 'peek', startY = 0, startTranslate = 0, isDragging = false;
 
 function getSheetTranslate() {
   const h = sheet.offsetHeight;
@@ -603,44 +533,30 @@ function getSheetTranslate() {
   if (sheetState === 'half') return h * 0.5;
   return 0;
 }
-
 handle.addEventListener('touchstart', e => {
-  isDragging = true;
-  startY = e.touches[0].clientY;
-  startTranslate = getSheetTranslate();
+  isDragging = true; startY = e.touches[0].clientY; startTranslate = getSheetTranslate();
   sheet.style.transition = 'none';
 }, { passive: true });
-
 document.addEventListener('touchmove', e => {
   if (!isDragging) return;
-  const dy = e.touches[0].clientY - startY;
-  const newT = Math.max(0, startTranslate + dy);
-  sheet.style.transform = `translateY(${newT}px)`;
+  sheet.style.transform = `translateY(${Math.max(0, startTranslate + e.touches[0].clientY - startY)}px)`;
 }, { passive: true });
-
 document.addEventListener('touchend', () => {
-  if (!isDragging) return;
-  isDragging = false;
-  sheet.style.transition = '';
-  const currentT = parseFloat(sheet.style.transform.replace(/[^0-9.-]/g, '')) || 0;
-  const h = sheet.offsetHeight;
-  const ratio = currentT / h;
-  if (ratio < 0.25) { sheetState = 'full'; }
-  else if (ratio < 0.6) { sheetState = 'half'; }
-  else { sheetState = 'peek'; }
+  if (!isDragging) return; isDragging = false; sheet.style.transition = '';
+  const t = parseFloat(sheet.style.transform.replace(/[^0-9.-]/g,''))||0;
+  const ratio = t / sheet.offsetHeight;
+  sheetState = ratio < 0.25 ? 'full' : ratio < 0.6 ? 'half' : 'peek';
   sheet.className = sheetState;
 });
 
-// Click map to collapse sheet
 map.on('click', () => {
-  if (sheetState !== 'peek') {
-    sheetState = 'peek';
-    sheet.className = 'peek';
-  }
+  if (sheetState !== 'peek') { sheetState = 'peek'; sheet.className = 'peek'; }
   document.getElementById('legend-panel').classList.remove('show');
 });
 
-// Render list
+// =====================================================
+// RENDER LIST
+// =====================================================
 function renderList(filter) {
   const list = document.getElementById('estate-list');
   const filtered = filter === 'all' ? estates : estates.filter(e => String(e.grade) === filter);
@@ -654,7 +570,7 @@ function renderList(filter) {
       <div class="estate-grade-dot" style="background:${gradeColors[e.grade]}"></div>
       <div class="estate-info">
         <div class="estate-name">${e.name}</div>
-        <div class="estate-meta">${e.village} &middot; ${e.region}</div>
+        <div class="estate-meta">${e.village} AOC &middot; ${e.region}</div>
       </div>
       <span class="grape-badge grape-${e.grade}">${gradeLabels[e.grade]}</span>
     </div>
@@ -665,12 +581,8 @@ function renderList(filter) {
       const idx = parseInt(item.dataset.index);
       const m = markers[idx];
       if (!m) return;
-      sheetState = 'peek';
-      sheet.className = 'peek';
-      setTimeout(() => {
-        map.setView(m.getLatLng(), 14, { animate: true });
-        m.openPopup();
-      }, 200);
+      sheetState = 'peek'; sheet.className = 'peek';
+      setTimeout(() => { map.setView(m.getLatLng(), 14, {animate:true}); m.openPopup(); }, 200);
       list.querySelectorAll('.estate-item').forEach(el => el.classList.remove('highlight'));
       item.classList.add('highlight');
     });
@@ -678,16 +590,14 @@ function renderList(filter) {
 
   markers.forEach(m => {
     const show = filter === 'all' || String(m.estateData.grade) === filter;
-    m.setStyle({ opacity: show ? 0.9 : 0.08, fillOpacity: show ? 0.7 : 0.04 });
+    m.setStyle({ opacity: show ? 0.95 : 0.08, fillOpacity: show ? 0.75 : 0.04 });
     m.setRadius(show ? gradeSizes[m.estateData.grade] : 3);
   });
 }
 
-// Filter (both mobile chips and desktop chips)
 document.querySelectorAll('.filter-chip').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
-    // Sync both mobile and desktop filter sets
     document.querySelectorAll(`.filter-chip[data-filter="${btn.dataset.filter}"]`).forEach(b => b.classList.add('active'));
     renderList(btn.dataset.filter);
   });
